@@ -4,107 +4,150 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Magical Men's Meta Sealed League</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0c10;
-    --surface: #11141a;
-    --surface2: #181c24;
-    --border: #232830;
-    --accent: #e8c84a;
-    --accent2: #4a9ee8;
-    --green: #3ecf6e;
-    --red: #e85a4a;
-    --text: #f0f2f5;
-    --muted: #7a8494;
-    --adam: #4a9ee8;
-    --brendan: #e85a4a;
-    --dan: #3ecf6e;
-    --jason: #e8c84a;
+    --bg0: #0e1018;
+    --bg1: #141720;
+    --bg2: #1a1e2a;
+    --bg3: #1f2433;
+    --border0: #252b3a;
+    --border1: #2e3649;
+    --border2: #3d4860;
+    --gold:     #c8973a;
+    --gold2:    #e4b86a;
+    --gold3:    #f2d08a;
+    --gold-dim: #5a4018;
+    --silver:   #8a9ab8;
+    --silver2:  #aabace;
+    --ink:      #dce4f0;
+    --ink2:     #9aaabf;
+    --ink3:     #5a6880;
+    --ink4:     #3a4455;
+    --err:      #9e3a2a;
+    --adam:     #2255aa;
+    --adam2:    #4d80d9;
+    --brendan:  #992222;
+    --brendan2: #cc5555;
+    --dan:      #226633;
+    --dan2:     #44aa66;
+    --jason:    #997722;
+    --jason2:   #ccaa44;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Barlow', sans-serif;
+    background: var(--bg0);
+    color: var(--ink);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 16px;
     min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* HEADER */
   header {
-    background: var(--surface);
-    border-bottom: 2px solid var(--accent);
+    background: var(--bg1);
+    border-bottom: 1px solid var(--border1);
     padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
     position: sticky;
     top: 0;
     z-index: 100;
   }
 
-  .logo { display: flex; align-items: baseline; gap: 0.5rem; }
+  header::before {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold-dim) 20%, var(--gold) 40%, var(--gold3) 50%, var(--gold) 60%, var(--gold-dim) 80%, transparent 100%);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .logo-left { display: flex; align-items: center; gap: 1rem; }
+  .logo-shield svg { width: 40px; height: 48px; }
+  .logo-text { display: flex; flex-direction: column; gap: 3px; }
+
   .logo-main {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 1.4rem;
-    letter-spacing: 0.08em; text-transform: uppercase;
-  }
-  .logo-tag {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; font-size: 0.75rem;
-    color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
-  }
-
-  .header-right { display: flex; align-items: center; gap: 1rem; }
-
-  .season-badge {
-    background: var(--accent); color: #000;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800; font-size: 0.75rem;
-    letter-spacing: 0.1em; padding: 0.25rem 0.75rem; border-radius: 2px;
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 1.05rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold2);
+    line-height: 1;
   }
 
-  .last-updated {
-    font-size: 0.7rem; color: var(--muted);
-    font-weight: 500; letter-spacing: 0.04em;
+  .logo-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink3);
   }
 
-  /* NAV */
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+
+  .header-count {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .header-updated {
+    font-family: 'Crimson Text', serif;
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--ink3);
+  }
+
   nav {
-    display: flex; background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem; overflow-x: auto;
+    background: var(--bg1);
+    border-bottom: 1px solid var(--border1);
+    padding: 0 2rem;
+    overflow-x: auto;
   }
+
+  .nav-inner { display: flex; max-width: 1200px; margin: 0 auto; }
 
   .nav-btn {
-    background: none; border: none;
-    color: var(--muted);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.85rem;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 0.9rem 1.5rem; cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: all 0.15s; white-space: nowrap;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    padding: 0.8rem 1.4rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
   }
-  .nav-btn:hover { color: var(--text); }
-  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-  /* MAIN */
+  .nav-btn:hover { color: var(--ink2); }
+  .nav-btn.active { color: var(--gold2); border-bottom-color: var(--gold); }
+
   main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
   .tab-content { display: none; }
   .tab-content.active { display: block; animation: fadeUp 0.3s ease forwards; }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* LOADING */
   .loading-screen {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
@@ -112,307 +155,170 @@
   }
 
   .spinner {
-    width: 40px; height: 40px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
+    width: 36px; height: 36px;
+    border: 2px solid var(--border1);
+    border-top-color: var(--gold);
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    animation: spin 0.9s linear infinite;
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .loading-text {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.85rem;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--muted);
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink3);
   }
 
   .error-screen {
-    background: var(--surface);
-    border: 1px solid var(--red);
-    border-radius: 6px;
-    padding: 2rem;
-    text-align: center;
-    max-width: 500px;
-    margin: 4rem auto;
+    background: var(--bg2); border: 1px solid var(--err);
+    border-radius: 2px; padding: 2rem; text-align: center;
+    max-width: 500px; margin: 4rem auto;
   }
 
   .error-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 1.2rem;
-    color: var(--red); margin-bottom: 0.75rem;
+    font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem;
+    color: var(--err); margin-bottom: 0.75rem; letter-spacing: 0.1em;
   }
 
-  .error-msg { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+  .error-msg { font-family: 'Crimson Text', serif; font-size: 0.9rem; color: var(--ink3); line-height: 1.6; white-space: pre-wrap; }
 
-  /* SECTION HEADER */
-  .section-header {
-    display: flex; align-items: baseline;
-    gap: 1rem; margin-bottom: 1.5rem;
-  }
-  .section-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 1.6rem;
-    letter-spacing: 0.06em; text-transform: uppercase;
-  }
-  .section-sub {
-    font-size: 0.8rem; color: var(--muted);
-    letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500;
-  }
+  /* Section header */
+  .section-header { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1.25rem; }
+  .section-rule { flex: 1; height: 1px; background: var(--border1); position: relative; }
+  .section-rule::after { content: ''; position: absolute; left: 0; top: 0; width: 35%; height: 1px; background: var(--gold-dim); }
+  .section-rule.right::after { left: auto; right: 0; }
+  .section-title { font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+  .section-sub { font-family: 'Crimson Text', serif; font-style: italic; font-size: 0.82rem; color: var(--ink3); }
 
-  /* SUMMARY ROW */
-  .summary-row {
-    display: grid; grid-template-columns: repeat(5, 1fr);
-    gap: 1rem; margin-bottom: 2rem;
-  }
+  /* Summary scrolls */
+  .summary-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; margin-bottom: 1.75rem; }
+
   .summary-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 1rem 1.25rem; text-align: center;
-  }
-  .summary-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 2.2rem;
-    color: var(--accent); line-height: 1;
-  }
-  .summary-lbl {
-    font-size: 0.7rem; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.1em;
-    margin-top: 0.25rem; font-weight: 600;
+    background: var(--bg2); border: 1px solid var(--border1);
+    border-radius: 2px; padding: 0.9rem 0.75rem 0.8rem;
+    text-align: center; position: relative;
   }
 
-  /* CARD */
-  .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 1.25rem;
+  .summary-card::before, .summary-card::after {
+    content: ''; position: absolute; width: 7px; height: 7px;
+    border-color: var(--border2); border-style: solid;
   }
 
-  /* STANDINGS TABLE */
+  .summary-card::before { top: 3px; left: 3px; border-width: 1px 0 0 1px; }
+  .summary-card::after  { bottom: 3px; right: 3px; border-width: 0 1px 1px 0; }
+  .summary-card.hot { border-color: var(--border2); }
+
+  .summary-num { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.6rem; color: var(--gold); line-height: 1; margin-bottom: 0.3rem; }
+  .summary-num.name { font-size: 0.9rem; padding-top: 0.2rem; line-height: 1.3; }
+  .summary-lbl { font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink3); line-height: 1.7; }
+  .summary-tied { font-family: 'Cinzel', serif; font-size: 0.45rem; letter-spacing: 0.1em; color: var(--ink4); text-transform: uppercase; margin-bottom: 0.15rem; }
+  .hot-tag { font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.08em; color: var(--gold-dim); margin-bottom: 0.15rem; }
+
+  /* Card */
+  .card { background: var(--bg2); border: 1px solid var(--border1); border-radius: 2px; padding: 1.25rem; }
+
+  /* Standings table */
   .standings-table { width: 100%; border-collapse: collapse; }
-  .standings-table th {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.7rem;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--muted); text-align: left;
-    padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border);
-  }
-  .standings-table th.right,
-  .standings-table td.right { text-align: right; }
-  .standings-table td {
-    padding: 0.9rem 0.75rem;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.95rem;
-  }
+  .standings-table th { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink4); text-align: left; padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--border1); background: var(--bg3); font-weight: 400; }
+  .standings-table th.right, .standings-table td.right { text-align: right; }
+  .standings-table td { padding: 0.8rem 0.75rem; border-bottom: 1px solid var(--border0); }
   .standings-table tr:last-child td { border-bottom: none; }
-  .standings-table tr:hover td { background: var(--surface2); }
+  .standings-table tr:hover td { background: var(--bg3); }
 
-  .rank-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800; font-size: 1.1rem; color: var(--muted); width: 2rem;
-  }
-  .rank-1 { color: var(--accent); }
+  .rank-num { font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.9rem; color: var(--ink3); width: 2.5rem; }
+  .rank-1 { color: var(--gold); }
 
-  .player-name-cell {
-    display: flex; align-items: center; gap: 0.6rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em;
-  }
-  .player-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .player-name-cell { display: flex; align-items: center; gap: 0.55rem; font-family: 'Cinzel', serif; font-weight: 600; font-size: 0.82rem; letter-spacing: 0.04em; }
+  .player-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 
-  .win-bar-wrap { display: flex; align-items: center; gap: 0.6rem; }
-  .win-bar-bg {
-    flex: 1; height: 6px; background: var(--border);
-    border-radius: 3px; overflow: hidden;
-  }
-  .win-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
-  .win-bar-pct {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.85rem; width: 3rem; text-align: right;
-  }
+  .standing-val { font-family: 'Crimson Text', serif; font-size: 1rem; color: var(--ink2); }
+  .standing-val.bold { color: var(--ink); font-weight: 600; }
+  .l7-border { border-left: 1px solid var(--border1) !important; padding-left: 1rem !important; }
 
-  /* POSITION HISTORY */
-  .pos-key { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
-  .pos-key-item { display: flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; color: var(--muted); font-weight: 500; }
-  .pos-swatch { width: 12px; height: 12px; border-radius: 2px; }
-  .pos-cell-1 { background: rgba(232,200,74,0.25); color: var(--accent); }
-  .pos-cell-2 { background: rgba(74,158,232,0.15); color: var(--accent2); }
-  .pos-cell-3 { background: rgba(62,207,110,0.1); color: var(--green); }
-  .pos-cell-4 { background: rgba(120,130,148,0.1); color: var(--muted); }
+  /* Position history */
+  .pos-key { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+  .pos-key-item { display: flex; align-items: center; gap: 0.3rem; font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+  .pos-swatch { width: 10px; height: 10px; border-radius: 1px; }
+  .pos-cell-1 { background: rgba(200,151,58,0.22); color: var(--gold2); }
+  .pos-cell-2 { background: rgba(100,140,200,0.15); color: var(--silver2); }
+  .pos-cell-3 { background: rgba(60,130,90,0.12); color: #6aaa80; }
+  .pos-cell-4 { background: rgba(40,50,80,0.25); color: var(--ink4); }
 
   .pos-history-wrap { overflow-x: auto; padding-bottom: 0.5rem; }
   .pos-history-table { border-collapse: collapse; min-width: 100%; }
-  .pos-history-table th, .pos-history-table td {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.78rem; padding: 0.35rem 0.45rem;
-    border: 1px solid var(--border); text-align: center; font-weight: 700;
-  }
-  .pos-history-table th {
-    background: var(--surface2); color: var(--muted);
-    font-size: 0.65rem; letter-spacing: 0.08em;
-  }
-  .pos-history-table td.player-col {
-    text-align: left; padding-left: 0.75rem;
-    font-size: 0.82rem; white-space: nowrap;
-  }
+  .pos-history-table th { font-family: 'Cinzel', serif; font-size: 0.45rem; letter-spacing: 0.08em; padding: 0.3rem 0.35rem; border: 1px solid var(--border0); text-align: center; background: var(--bg3); color: var(--ink4); font-weight: 400; }
+  .pos-history-table td { padding: 0.3rem 0.35rem; border: 1px solid var(--border0); text-align: center; font-family: 'Cinzel', serif; font-size: 0.62rem; font-weight: 600; }
+  .pos-history-table td.player-col { text-align: left; padding-left: 0.7rem; font-size: 0.55rem; letter-spacing: 0.08em; white-space: nowrap; }
 
-  /* FILTER BAR */
-  .filter-bar { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-  .filter-btn {
-    background: var(--surface); border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.75rem;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 0.4rem 1rem; border-radius: 3px;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .filter-btn:hover { border-color: #3a4050; color: var(--text); }
-  .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+  /* Ornament divider */
+  .ornament-divider { text-align: center; margin: 1.75rem 0; position: relative; }
+  .ornament-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border1); }
+  .ornament-inner { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--bg0); padding: 0 1.25rem; position: relative; font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.25em; color: var(--border2); text-transform: uppercase; }
 
-  /* GAME LOG */
-  .game-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; margin-bottom: 0.75rem; overflow: hidden;
-    transition: border-color 0.15s;
-  }
-  .game-card:hover { border-color: #3a4050; }
-  .game-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0.6rem 1rem; background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-  }
-  .game-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 0.8rem;
-    letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase;
-  }
-  .game-date { font-size: 0.78rem; color: var(--muted); }
+  /* Filter bar */
+  .filter-bar { display: flex; gap: 0.4rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .filter-btn { background: none; border: 1px solid var(--border1); color: var(--ink3); font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 1px; cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover { color: var(--ink2); border-color: var(--border2); }
+  .filter-btn.active { border-color: var(--gold-dim); color: var(--gold); background: rgba(200,151,58,0.08); }
+
+  /* Battle log */
+  .game-card { background: var(--bg2); border: 1px solid var(--border1); border-radius: 2px; margin-bottom: 0.5rem; overflow: hidden; transition: border-color 0.15s; }
+  .game-card:hover { border-color: var(--border2); }
+  .game-header { display: flex; align-items: center; justify-content: space-between; padding: 0.4rem 0.9rem; background: var(--bg3); border-bottom: 1px solid var(--border0); }
+  .game-num { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink4); }
+  .game-date { font-family: 'Crimson Text', serif; font-style: italic; font-size: 0.82rem; color: var(--ink3); }
   .game-body { display: grid; grid-template-columns: repeat(4, 1fr); }
-  .game-player {
-    padding: 0.75rem 1rem; border-right: 1px solid var(--border);
-  }
+  .game-player { padding: 0.65rem 0.9rem; border-right: 1px solid var(--border0); }
   .game-player:last-child { border-right: none; }
-  .game-player.winner { background: rgba(62,207,110,0.05); }
-  .game-player-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.75rem;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.35rem;
-  }
-  .winner-crown { color: var(--accent); font-size: 0.7rem; }
-  .game-commander { font-size: 0.82rem; color: var(--text); line-height: 1.3; margin-bottom: 0.2rem; }
-  .game-seat { font-size: 0.68rem; color: var(--muted); }
-  .decklist-link {
-    display: inline-block; margin-top: 0.3rem;
-    font-size: 0.65rem; color: var(--accent2);
-    text-decoration: none; letter-spacing: 0.05em;
-    text-transform: uppercase; font-weight: 600;
-  }
-  .decklist-link:hover { text-decoration: underline; }
+  .game-player.winner { background: rgba(200,151,58,0.05); }
+  .game-player-name { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.3rem; }
+  .winner-crown { color: var(--gold); font-size: 0.6rem; }
+  .game-commander { font-family: 'Crimson Text', serif; font-style: italic; font-size: 0.88rem; color: var(--ink2); line-height: 1.3; margin-bottom: 0.15rem; }
+  .game-seat { font-family: 'Cinzel', serif; font-size: 0.45rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink4); }
+  .decklist-link { display: inline-block; margin-top: 0.3rem; font-family: 'Cinzel', serif; font-size: 0.45rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--silver); text-decoration: none; border-bottom: 1px solid var(--border1); transition: all 0.15s; }
+  .decklist-link:hover { color: var(--gold2); border-bottom-color: var(--gold-dim); }
 
-  /* COMMANDERS */
+  /* Commanders */
   .cmdr-table { width: 100%; border-collapse: collapse; }
-  .cmdr-table th {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.7rem;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--muted); text-align: left;
-    padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--border);
-    cursor: pointer; user-select: none;
-  }
-  .cmdr-table th:hover { color: var(--text); }
-  .cmdr-table td {
-    padding: 0.65rem 0.75rem;
-    border-bottom: 1px solid var(--border); font-size: 0.88rem;
-  }
+  .cmdr-table th { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink4); text-align: left; padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--border1); background: var(--bg3); cursor: pointer; user-select: none; font-weight: 400; transition: color 0.15s; }
+  .cmdr-table th:hover { color: var(--ink2); }
+  .cmdr-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border0); }
   .cmdr-table tr:last-child td { border-bottom: none; }
-  .cmdr-table tr:hover td { background: var(--surface2); }
-  .win-badge {
-    background: var(--green); color: #000;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800; font-size: 0.75rem;
-    padding: 0.15rem 0.5rem; border-radius: 2px; display: inline-block;
-  }
-  .zero-badge { color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.75rem; }
+  .cmdr-table tr:hover td { background: var(--bg3); }
+  .win-badge { background: var(--dan); color: #d0f0e0; font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.6rem; letter-spacing: 0.08em; padding: 0.15rem 0.5rem; border-radius: 1px; display: inline-block; }
+  .zero-badge { color: var(--ink4); font-family: 'Cinzel', serif; font-size: 0.7rem; }
   .table-wrap { overflow-x: auto; }
 
-  /* POOLS */
-  .pool-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
-  .pool-player-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-top: 3px solid; border-radius: 6px; overflow: hidden;
-  }
-  .pool-player-header {
-    padding: 0.9rem 1rem 0.6rem;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .pool-player-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 1.2rem;
-    letter-spacing: 0.08em; text-transform: uppercase;
-  }
-  .pool-count { font-size: 0.7rem; color: var(--muted); font-weight: 500; }
-  .pool-sets { padding: 0 1rem 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
-  .set-pill {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 4px; padding: 0.4rem 0.65rem;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .set-code { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.06em; }
-  .set-name { font-size: 0.7rem; color: var(--muted); text-align: right; max-width: 55%; line-height: 1.2; }
-  .set-oldest { border-color: var(--red); border-left: 3px solid var(--red); }
-  .set-newest { border-color: var(--green); border-left: 3px solid var(--green); }
+  /* Vaults */
+  .pool-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+  .pool-player-card { background: var(--bg2); border: 1px solid var(--border1); border-top: 3px solid; border-radius: 2px; overflow: hidden; }
+  .pool-player-header { padding: 0.65rem 0.85rem 0.5rem; background: var(--bg3); border-bottom: 1px solid var(--border1); display: flex; align-items: center; gap: 0.45rem; }
+  .heraldic-bar { width: 3px; height: 16px; border-radius: 1px; flex-shrink: 0; }
+  .pool-player-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .pool-count { font-family: 'Crimson Text', serif; font-size: 0.78rem; color: var(--ink3); margin-left: auto; font-style: italic; }
+  .pool-sets { padding: 0.5rem 0.7rem; display: flex; flex-direction: column; gap: 0.28rem; }
+  .set-pill { background: var(--bg3); border: 1px solid var(--border0); border-radius: 1px; padding: 0.22rem 0.45rem; display: flex; align-items: center; justify-content: space-between; }
+  .set-pill.doomed { opacity: 0.5; }
+  .set-code { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--gold); }
+  .set-pill.doomed .set-code { color: var(--ink3); }
+  .set-name { font-family: 'Crimson Text', serif; font-style: italic; font-size: 0.72rem; color: var(--ink3); text-align: right; max-width: 55%; line-height: 1.2; }
 
-  .keeper-badge {
-    background: var(--accent); color: #000;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800; font-size: 0.6rem;
-    letter-spacing: 0.08em; padding: 0.1rem 0.35rem;
-    border-radius: 2px; text-transform: uppercase;
-  }
+  .headstone-row { padding: 0.4rem 0.7rem 0.5rem; border-top: 1px solid var(--border0); display: flex; align-items: center; gap: 0.5rem; }
+  .headstone-text { font-family: 'Crimson Text', serif; font-style: italic; font-size: 0.7rem; color: var(--ink4); line-height: 1.35; }
+  .headstone-set { font-family: 'Cinzel', serif; font-style: normal; font-size: 0.55rem; letter-spacing: 0.08em; color: var(--ink3); }
 
-  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-  .card-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700; font-size: 0.7rem;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 0.75rem;
-  }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+  .card-title { font-family: 'Cinzel', serif; font-weight: 600; font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink3); margin-bottom: 0.65rem; }
+  .keeper-badge { background: var(--gold-dim); color: var(--gold3); font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.5rem; letter-spacing: 0.1em; padding: 0.15rem 0.4rem; border-radius: 1px; text-transform: uppercase; display: inline-block; margin-top: 0.35rem; }
 
-  .dl-btn {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.5rem;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .dl-btn:hover:not(:disabled) {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #000;
-  }
-  .dl-btn:disabled {
-    opacity: 0.5;
-    cursor: default;
-  }
-    background: var(--surface2); border: 1px solid var(--border);
-    border-left: 3px solid var(--accent); border-radius: 4px;
-    padding: 0.75rem 1rem; font-size: 0.8rem;
-    color: var(--muted); margin-bottom: 1.5rem;
-  }
-  .data-note strong { color: var(--text); }
+  .dl-btn { width: calc(100% - 1.4rem); margin: 0 0.7rem 0.7rem; background: none; border: 1px solid var(--border2); color: var(--ink4); font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.4rem; border-radius: 1px; cursor: pointer; transition: all 0.2s; display: block; }
+  .dl-btn:hover:not(:disabled) { border-color: var(--gold-dim); color: var(--gold); background: rgba(200,151,58,0.07); }
+  .dl-btn:disabled { opacity: 0.4; cursor: default; }
 
-  @media (max-width: 1100px) {
-    .summary-row { grid-template-columns: repeat(3, 1fr); }
-  }
+  @media (max-width: 1100px) { .summary-row { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 900px) {
     .summary-row { grid-template-columns: 1fr 1fr; }
     .pool-grid { grid-template-columns: 1fr 1fr; }
@@ -421,7 +327,7 @@
   }
   @media (max-width: 600px) {
     .summary-row { grid-template-columns: 1fr 1fr; }
-    .pool-grid { grid-template-columns: 1fr 1fr; }
+    .pool-grid { grid-template-columns: 1fr; }
     main { padding: 1rem; }
   }
 </style>
@@ -429,32 +335,48 @@
 <body>
 
 <header>
-  <div class="logo">
-    <span class="logo-main">Magical Men's Meta</span>
-    <span class="logo-tag">Sealed League</span>
-  </div>
-  <div class="header-right">
-    <span class="last-updated" id="last-updated"></span>
-    <div class="season-badge">Est. 2023</div>
+  <div class="header-inner">
+    <div class="logo-left">
+      <div class="logo-shield">
+        <svg viewBox="0 0 40 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2h36v26c0 9-18 18-18 18S2 37 2 28V2z" fill="#141720" stroke="#3d4860" stroke-width="1"/>
+          <path d="M4 4h32v24c0 8-16 16-16 16S4 36 4 28V4z" fill="none" stroke="#2e3649" stroke-width="0.5"/>
+          <line x1="20" y1="5" x2="20" y2="41" stroke="#2e3649" stroke-width="0.5"/>
+          <line x1="4" y1="22" x2="36" y2="22" stroke="#2e3649" stroke-width="0.5"/>
+          <text x="20" y="17" text-anchor="middle" font-family="serif" font-size="10" fill="#c8973a">⚔</text>
+          <text x="20" y="33" text-anchor="middle" font-family="serif" font-size="7" fill="#3d4860">✦</text>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="logo-main">Magical Men's Meta</div>
+        <div class="logo-sub">Sealed League · Annals of Record · Est. MMXXIII</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-count" id="battle-count">Battles Waged</div>
+      <div class="header-updated" id="last-updated"></div>
+    </div>
   </div>
 </header>
 
 <nav>
-  <button class="nav-btn active" onclick="showTab('standings', this)">Standings</button>
-  <button class="nav-btn" onclick="showTab('games', this)">Game Log</button>
-  <button class="nav-btn" onclick="showTab('commanders', this)">Commanders</button>
-  <button class="nav-btn" onclick="showTab('pools', this)">Pools</button>
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showTab('standings', this)">⚔ Standings</button>
+    <button class="nav-btn" onclick="showTab('games', this)">📜 Battle Chronicles</button>
+    <button class="nav-btn" onclick="showTab('commanders', this)">🏰 Commanders</button>
+    <button class="nav-btn" onclick="showTab('pools', this)">🗝 Vaults</button>
+  </div>
 </nav>
 
 <main>
   <div id="loading" class="loading-screen">
     <div class="spinner"></div>
-    <div class="loading-text">Loading league data…</div>
+    <div class="loading-text">Consulting the annals…</div>
   </div>
 
   <div id="error" style="display:none">
     <div class="error-screen">
-      <div class="error-title">Could not load data</div>
+      <div class="error-title">The Scrolls Are Unreadable</div>
       <div class="error-msg" id="error-msg"></div>
     </div>
   </div>
@@ -464,21 +386,24 @@
     <!-- STANDINGS -->
     <div id="tab-standings" class="tab-content active">
       <div class="summary-row" id="summary-row"></div>
+
       <div class="section-header">
-        <span class="section-title">Leaderboard</span>
-        <span class="section-sub" id="standings-sub"></span>
+        <div class="section-rule"></div>
+        <span class="section-title">The Grand Ledger</span>
+        <div class="section-rule right"></div>
       </div>
-      <div class="card" style="margin-bottom:2rem">
+
+      <div class="card" style="margin-bottom:1.75rem;padding:0">
         <table class="standings-table">
           <thead>
             <tr>
               <th style="width:2.5rem">#</th>
-              <th>Player</th>
-              <th class="right">W</th>
-              <th class="right">Avg Pos</th>
+              <th>Champion</th>
+              <th class="right">Victories</th>
+              <th class="right">Avg Position</th>
               <th class="right">Avg Seat</th>
-              <th class="right" style="border-left:1px solid var(--border);padding-left:1rem">Last 7 Pos</th>
-              <th class="right">Last 7 Seat</th>
+              <th class="right" style="border-left:1px solid var(--border1);padding-left:1rem">Last VII Pos</th>
+              <th class="right">Last VII Seat</th>
             </tr>
           </thead>
           <tbody id="standings-body"></tbody>
@@ -486,34 +411,39 @@
       </div>
 
       <div class="section-header">
-        <span class="section-title">Position History</span>
-        <span class="section-sub">All games · newest right</span>
+        <div class="section-rule"></div>
+        <span class="section-title">Position Through the Ages</span>
+        <div class="section-rule right"></div>
       </div>
+
       <div class="pos-key">
         <div class="pos-key-item"><div class="pos-swatch pos-cell-1"></div>1st</div>
         <div class="pos-key-item"><div class="pos-swatch pos-cell-2"></div>2nd</div>
         <div class="pos-key-item"><div class="pos-swatch pos-cell-3"></div>3rd</div>
         <div class="pos-key-item"><div class="pos-swatch pos-cell-4"></div>4th</div>
       </div>
-      <div class="card">
+
+      <div class="card" style="padding:0">
         <div class="pos-history-wrap">
           <table class="pos-history-table" id="pos-history-table"></table>
         </div>
       </div>
     </div>
 
-    <!-- GAME LOG -->
+    <!-- BATTLE CHRONICLES -->
     <div id="tab-games" class="tab-content">
       <div class="section-header">
-        <span class="section-title">Game Log</span>
+        <div class="section-rule"></div>
+        <span class="section-title">Battle Chronicles</span>
+        <div class="section-rule right"></div>
         <span class="section-sub" id="games-sub"></span>
       </div>
       <div class="filter-bar" id="game-filters">
-        <button class="filter-btn active" onclick="filterGames('all',this)">All</button>
-        <button class="filter-btn" onclick="filterGames('Adam',this)">Adam Wins</button>
-        <button class="filter-btn" onclick="filterGames('Brendan',this)">Brendan Wins</button>
-        <button class="filter-btn" onclick="filterGames('Dan',this)">Dan Wins</button>
-        <button class="filter-btn" onclick="filterGames('Jason',this)">Jason Wins</button>
+        <button class="filter-btn active" onclick="filterGames('all',this)">All Battles</button>
+        <button class="filter-btn" onclick="filterGames('Adam',this)">Adam's Victories</button>
+        <button class="filter-btn" onclick="filterGames('Brendan',this)">Brendan's Victories</button>
+        <button class="filter-btn" onclick="filterGames('Dan',this)">Dan's Victories</button>
+        <button class="filter-btn" onclick="filterGames('Jason',this)">Jason's Victories</button>
       </div>
       <div id="game-log"></div>
     </div>
@@ -521,26 +451,27 @@
     <!-- COMMANDERS -->
     <div id="tab-commanders" class="tab-content">
       <div class="section-header">
-        <span class="section-title">Commander Stats</span>
-        <span class="section-sub">By pilot</span>
+        <div class="section-rule"></div>
+        <span class="section-title">The Commander Rolls</span>
+        <div class="section-rule right"></div>
       </div>
       <div class="filter-bar" id="cmdr-filters">
-        <button class="filter-btn active" onclick="filterCmdrs('all',this)">All Players</button>
+        <button class="filter-btn active" onclick="filterCmdrs('all',this)">All Champions</button>
         <button class="filter-btn" onclick="filterCmdrs('Adam',this)">Adam</button>
         <button class="filter-btn" onclick="filterCmdrs('Brendan',this)">Brendan</button>
         <button class="filter-btn" onclick="filterCmdrs('Dan',this)">Dan</button>
         <button class="filter-btn" onclick="filterCmdrs('Jason',this)">Jason</button>
       </div>
-      <div class="card">
+      <div class="card" style="padding:0">
         <div class="table-wrap">
           <table class="cmdr-table">
             <thead>
               <tr>
                 <th onclick="sortCmdrs('commander')">Commander ↕</th>
                 <th>Pilots</th>
-                <th onclick="sortCmdrs('wins')">W ↕</th>
-                <th onclick="sortCmdrs('played')">GP ↕</th>
-                <th onclick="sortCmdrs('avgPos')">Avg Pos ↕</th>
+                <th onclick="sortCmdrs('wins')">Victories ↕</th>
+                <th onclick="sortCmdrs('played')">Battles ↕</th>
+                <th onclick="sortCmdrs('avgPos')">Avg Position ↕</th>
               </tr>
             </thead>
             <tbody id="cmdr-body"></tbody>
@@ -549,33 +480,33 @@
       </div>
     </div>
 
-    <!-- POOLS -->
+    <!-- VAULTS -->
     <div id="tab-pools" class="tab-content">
       <div class="section-header">
-        <span class="section-title">Current Pools</span>
-        <span class="section-sub" id="pools-sub">7 sets per player</span>
-      </div>
-      <div class="data-note">
-        <strong>Red border</strong> = oldest set (next to rotate out) &nbsp;·&nbsp;
-        <strong>Green border</strong> = newest set &nbsp;·&nbsp;
-        <strong>KEEPER</strong> = card saved from previous rotation
+        <div class="section-rule"></div>
+        <span class="section-title">The Current Vaults</span>
+        <div class="section-rule right"></div>
+        <span class="section-sub">7 sets per champion</span>
       </div>
       <div class="pool-grid" id="pool-grid"></div>
 
-      <div class="section-header" style="margin-top:2rem">
+      <div class="ornament-divider" style="margin-top:2rem">
+        <div class="ornament-inner">✦ &nbsp; Keepers of the Fallen &nbsp; ✦</div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-rule"></div>
         <span class="section-title">Keeper Status</span>
-        <span class="section-sub">Current rotation</span>
+        <div class="section-rule right"></div>
+        <span class="section-sub">Cards rescued from the graveyard</span>
       </div>
       <div class="grid-4" id="keeper-grid"></div>
     </div>
 
-  </div><!-- /app -->
+  </div>
 </main>
 
 <script>
-// ─────────────────────────────────────────────
-// CONFIG — only thing you need to change
-// ─────────────────────────────────────────────
 const SHEET_ID = '1zKI3auk86Jq3mJBX8OYP5Y9WqiIoWGfBJi507tNj6Qs';
 
 const SHEET_TABS = {
@@ -591,13 +522,10 @@ const SHEET_TABS = {
   jasonGrave:      "Jason's Graveyard",
 };
 
-const PLAYER_LETTERS = { A: 'Adam', B: 'Brendan', D: 'Dan', J: 'Jason' };
-
-const PLAYERS = ['Adam', 'Brendan', 'Dan', 'Jason'];
-
-const PLAYER_COLORS = {
-  Adam: '#4a9ee8', Brendan: '#e85a4a', Dan: '#3ecf6e', Jason: '#e8c84a'
-};
+const PLAYER_LETTERS = { A:'Adam', B:'Brendan', D:'Dan', J:'Jason' };
+const PLAYERS = ['Adam','Brendan','Dan','Jason'];
+const PLAYER_COLORS  = { Adam:'#2255aa', Brendan:'#992222', Dan:'#226633', Jason:'#997722' };
+const PLAYER_COLORS2 = { Adam:'#4d80d9', Brendan:'#cc5555', Dan:'#44aa66', Jason:'#ccaa44' };
 
 const SET_NAMES = {
   NEO:'Kamigawa: Neon Dynasty', AFR:'Forgotten Realms', M21:'Core Set 2021',
@@ -608,189 +536,115 @@ const SET_NAMES = {
   MID:'Innistrad: Midnight Hunt', THB:'Theros Beyond Death', ZNR:'Zendikar Rising',
   DMR:'Dominaria Remastered', BRO:"The Brothers' War", WOE:'Wilds of Eldraine',
   LCI:'Lost Caverns of Ixalan', RVR:'Ravnica Remastered', MKM:'Murders at Karlov Manor',
-  OTJ:'Outlaws of Thunder Junction', TLA:'The Last Airbender',
-  TLE:'The Last Airbender (extras)',
-  'UB Commander':'Universes Beyond Commander',
-  MH3:'Modern Horizons 3', BIG:'The Big Score', ACR:'Assassin\'s Creed',
-  DSK:'Duskmourn', FDN:'Foundations', INR:'Innistrad Remastered',
-  AKR:'Amonkhet Remastered', KLM:'Bloomburrow', MKC:'Karlov Manor Commander',
+  OTJ:'Outlaws of Thunder Junction', TLA:'The Last Airbender', TLE:'The Last Airbender (extras)',
+  'UB Commander':'Universes Beyond Commander', MH3:'Modern Horizons 3',
+  BIG:'The Big Score', ACR:"Assassin's Creed", DSK:'Duskmourn',
+  FDN:'Foundations', INR:'Innistrad Remastered', AKR:'Amonkhet Remastered',
+  KLM:'Bloomburrow', MKC:'Karlov Manor Commander',
 };
 
-// ─────────────────────────────────────────────
-// FETCH HELPERS
-// ─────────────────────────────────────────────
-function sheetUrl(tabName) {
-  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
-}
+// ── FETCH ──
+function sheetUrl(t) { return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(t)}`; }
 
-async function fetchCSV(tabName) {
-  const res = await fetch(sheetUrl(tabName));
-  if (!res.ok) throw new Error(`Failed to fetch sheet: ${tabName}`);
-  const text = await res.text();
-  return parseCSV(text);
+async function fetchCSV(t) {
+  const res = await fetch(sheetUrl(t));
+  if (!res.ok) throw new Error(`Failed to fetch: ${t}`);
+  return parseCSV(await res.text());
 }
 
 function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  return lines.map(line => {
-    const cols = [];
-    let cur = '', inQuote = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') { inQuote = !inQuote; }
-      else if (c === ',' && !inQuote) { cols.push(cur.trim()); cur = ''; }
+  return text.trim().split('\n').map(line => {
+    const cols = []; let cur = '', inQ = false;
+    for (const c of line) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
       else { cur += c; }
     }
-    cols.push(cur.trim());
-    return cols;
+    cols.push(cur.trim()); return cols;
   });
 }
 
-// ─────────────────────────────────────────────
-// PARSE MATCH HISTORY
-// ─────────────────────────────────────────────
-// Columns: A=Player B=Game# C=Seat D=Position E=Commander F=Won G=Date H=Decklist I=Last5
+// ── PARSERS ──
 function parseMatchHistory(rows) {
-  // skip header row
   const games = {};
   for (let i = 1; i < rows.length; i++) {
     const r = rows[i];
     if (!r[0] || !r[1]) continue;
-    const gameNum = parseInt(r[1]);
-    if (isNaN(gameNum)) continue;
-    if (!games[gameNum]) games[gameNum] = { game: gameNum, date: r[6] || '', players: [] };
-    games[gameNum].players.push({
-      name:      r[0],
-      seat:      parseInt(r[2]) || 0,
-      position:  parseInt(r[3]) || 0,
-      commander: r[4] || '',
-      won:       r[5] === '1' || r[5] === 'TRUE' || r[5] === 'true' || r[5] === '1.0',
-      decklist:  r[7] || '',
-    });
+    const n = parseInt(r[1]); if (isNaN(n)) continue;
+    if (!games[n]) games[n] = { game:n, date:r[6]||'', players:[] };
+    games[n].players.push({ name:r[0], seat:parseInt(r[2])||0, position:parseInt(r[3])||0, commander:r[4]||'', won:r[5]==='1'||r[5]==='TRUE'||r[5]==='true'||r[5]==='1.0', decklist:r[7]||'' });
   }
   return Object.values(games).sort((a,b) => a.game - b.game);
 }
 
-// ─────────────────────────────────────────────
-// PARSE POOL / GRAVEYARD
-// ─────────────────────────────────────────────
-// Columns: A=Amount B=Name C=Set D=Number E=Foil? F=RotationOrder G=Keeper(pool only)
-function parsePool(rows, hasKeeper = true) {
+function parsePool(rows) {
   const cards = [];
   for (let i = 1; i < rows.length; i++) {
-    const r = rows[i];
-    if (!r[1]) continue;
-    cards.push({
-      amount:    parseInt(r[0]) || 1,
-      name:      r[1],
-      set:       r[2] || '',
-      number:    r[3] || '',
-      foil:      r[4] === 'foil',
-      rotOrder:  parseInt(r[5]) || 0,
-      keeper:    hasKeeper ? (r[6] === '1' || r[6] === 'TRUE' || r[6] === '1.0') : false,
-    });
+    const r = rows[i]; if (!r[1]) continue;
+    cards.push({ amount:parseInt(r[0])||1, name:r[1], set:r[2]||'', number:r[3]||'', foil:r[4]==='foil', rotOrder:parseInt(r[5])||0, keeper:r[6]==='1'||r[6]==='TRUE'||r[6]==='1.0' });
   }
   return cards;
 }
 
-// Parse the Rotation Order / History tab
-// Columns: A=SetCode B=AssignedTo(A/B/D/J) C=RotationOrder D=RotationPoint E=Last7? F=SetName (G+ = scratch, ignore)
 function parseRotationHistory(rows) {
-  const result = { Adam: [], Brendan: [], Dan: [], Jason: [] };
-  const setNames = {}; // code -> name, built from col F
+  const result = { Adam:[], Brendan:[], Dan:[], Jason:[] };
   for (let i = 1; i < rows.length; i++) {
     const r = rows[i];
-    const code     = (r[0] || '').trim();
-    const letter   = (r[1] || '').trim();
-    const rotOrder = parseInt(r[2]);
-    const setName  = (r[5] || '').trim();
+    const code = (r[0]||'').trim(), letter = (r[1]||'').trim(), rotOrder = parseInt(r[2]), setName = (r[5]||'').trim();
     if (!code || !letter || isNaN(rotOrder)) continue;
-    const player = PLAYER_LETTERS[letter];
-    if (!player) continue;
+    const player = PLAYER_LETTERS[letter]; if (!player) continue;
     result[player].push({ code, rotOrder, setName });
-    if (setName) setNames[code] = setName; // last write wins, fine for display
   }
-  result._setNames = setNames; // attach for use in rendering
   return result;
 }
 
-// Get the 7 active sets for a player from rotation history (highest 7 rotation orders)
-function activeSets(rotationData, player) {
-  const entries = (rotationData[player] || []).slice().sort((a,b) => a.rotOrder - b.rotOrder);
-  return entries.slice(-7);
+function activeSets(rd, player) {
+  return (rd[player]||[]).slice().sort((a,b)=>a.rotOrder-b.rotOrder).slice(-7);
 }
 
-// Find keeper card from graveyard: look only at cards with the highest rotation order,
-// then find one marked with keeper=true among those.
 function keeperCard(graveCards) {
-  if (!graveCards.length) return null;
-  const validCards = graveCards.filter(c => c.rotOrder > 0);
-  if (!validCards.length) return null;
-  const maxRot = Math.max(...validCards.map(c => c.rotOrder));
-  const mostRecent = validCards.filter(c => c.rotOrder === maxRot);
-  const kept = mostRecent.find(c => c.keeper);
+  const valid = graveCards.filter(c => c.rotOrder > 0); if (!valid.length) return null;
+  const maxRot = Math.max(...valid.map(c=>c.rotOrder));
+  const kept = valid.filter(c=>c.rotOrder===maxRot).find(c=>c.keeper);
   return kept ? kept.name : null;
 }
 
-// Parse graveyard tab — same structure as pool but keeper col (G) is what we care about
-// Graveyard columns: A=Amount B=Name C=Set D=Number E=Foil? F=RotationOrder G=Keeper?
 function parseGraveyard(rows) {
   const cards = [];
   for (let i = 1; i < rows.length; i++) {
-    const r = rows[i];
-    if (!r[1]) continue;
-    // Check header row to detect if keeper column exists
-    const keeperVal = r[6] || '';
-    cards.push({
-      amount:   parseInt(r[0]) || 1,
-      name:     r[1],
-      set:      r[2] || '',
-      number:   r[3] || '',
-      foil:     (r[4] || '').toLowerCase() === 'foil',
-      rotOrder: parseInt(r[5]) || 0,
-      keeper:   keeperVal === '1' || keeperVal === 'TRUE' || keeperVal === '1.0',
-    });
+    const r = rows[i]; if (!r[1]) continue;
+    const kv = r[6]||'';
+    cards.push({ amount:parseInt(r[0])||1, name:r[1], set:r[2]||'', number:r[3]||'', foil:(r[4]||'').toLowerCase()==='foil', rotOrder:parseInt(r[5])||0, keeper:kv==='1'||kv==='TRUE'||kv==='1.0' });
   }
   return cards;
 }
-// ─────────────────────────────────────────────
+
+// ── STATS ──
 function computeStats(games) {
   const stats = {};
-  PLAYERS.forEach(p => {
-    stats[p] = { wins:0, games:0, posSum:0, seatSum:0, positions:[], last7Pos:[], last7Seat:[] };
-  });
-
+  PLAYERS.forEach(p => { stats[p] = { wins:0, games:0, posSum:0, seatSum:0, positions:[], last7Pos:[], last7Seat:[], last7Wins:0 }; });
   games.forEach(g => {
     g.players.forEach(p => {
       if (!stats[p.name]) return;
-      stats[p.name].games++;
-      stats[p.name].posSum += p.position;
-      stats[p.name].seatSum += p.seat;
-      stats[p.name].positions.push({ game: g.game, pos: p.position });
+      stats[p.name].games++; stats[p.name].posSum += p.position; stats[p.name].seatSum += p.seat;
+      stats[p.name].positions.push({ game:g.game, pos:p.position });
       if (p.won) stats[p.name].wins++;
     });
   });
-
-  const last7 = games.slice(-7);
-  last7.forEach(g => {
+  games.slice(-7).forEach(g => {
     g.players.forEach(p => {
       if (!stats[p.name]) return;
-      stats[p.name].last7Pos.push(p.position);
-      stats[p.name].last7Seat.push(p.seat);
-      if (p.won) stats[p.name].last7Wins = (stats[p.name].last7Wins || 0) + 1;
+      stats[p.name].last7Pos.push(p.position); stats[p.name].last7Seat.push(p.seat);
+      if (p.won) stats[p.name].last7Wins++;
     });
   });
-
   PLAYERS.forEach(p => {
     const s = stats[p];
-    s.avgPos    = s.games ? (s.posSum / s.games).toFixed(2) : '-';
-    s.avgSeat   = s.games ? (s.seatSum / s.games).toFixed(2) : '-';
-    s.winPct    = s.games ? ((s.wins / s.games) * 100).toFixed(1) : '0.0';
-    s.last7Avg  = s.last7Pos.length  ? (s.last7Pos.reduce((a,b)=>a+b,0)  / s.last7Pos.length).toFixed(2)  : '-';
-    s.last7SeatAvg = s.last7Seat.length ? (s.last7Seat.reduce((a,b)=>a+b,0) / s.last7Seat.length).toFixed(2) : '-';
-    s.last7Wins = s.last7Wins || 0;
+    s.avgPos       = s.games ? (s.posSum/s.games).toFixed(2) : '-';
+    s.avgSeat      = s.games ? (s.seatSum/s.games).toFixed(2) : '-';
+    s.last7Avg     = s.last7Pos.length  ? (s.last7Pos.reduce((a,b)=>a+b,0)/s.last7Pos.length).toFixed(2)  : '-';
+    s.last7SeatAvg = s.last7Seat.length ? (s.last7Seat.reduce((a,b)=>a+b,0)/s.last7Seat.length).toFixed(2) : '-';
   });
-
   return stats;
 }
 
@@ -798,160 +652,142 @@ function computeCommanderStats(games) {
   const cmdrs = {};
   games.forEach(g => {
     g.players.forEach(p => {
-      const key = p.commander;
-      if (!cmdrs[key]) cmdrs[key] = { commander: p.commander, wins:0, played:0, posSum:0, pilots:{} };
-      cmdrs[key].played++;
-      cmdrs[key].posSum += p.position;
-      if (p.won) cmdrs[key].wins++;
-      // Track per-pilot stats
-      if (!cmdrs[key].pilots[p.name]) cmdrs[key].pilots[p.name] = { wins:0, played:0 };
-      cmdrs[key].pilots[p.name].played++;
-      if (p.won) cmdrs[key].pilots[p.name].wins++;
+      if (!cmdrs[p.commander]) cmdrs[p.commander] = { commander:p.commander, wins:0, played:0, posSum:0, pilots:{} };
+      cmdrs[p.commander].played++; cmdrs[p.commander].posSum += p.position;
+      if (p.won) cmdrs[p.commander].wins++;
+      if (!cmdrs[p.commander].pilots[p.name]) cmdrs[p.commander].pilots[p.name] = { wins:0, played:0 };
+      cmdrs[p.commander].pilots[p.name].played++;
+      if (p.won) cmdrs[p.commander].pilots[p.name].wins++;
     });
   });
-  return Object.values(cmdrs).map(c => ({ ...c, avgPos: (c.posSum/c.played).toFixed(1) }));
+  return Object.values(cmdrs).map(c => ({ ...c, avgPos:(c.posSum/c.played).toFixed(1) }));
 }
 
-// ─────────────────────────────────────────────
-// RENDER — STANDINGS
-// ─────────────────────────────────────────────
-function renderStandings(stats, games) {
-  const totalGames = games.length;
-  document.getElementById('standings-sub').textContent = `${totalGames} games played`;
+// ── ROMAN NUMERALS ──
+function toRoman(n) {
+  const v=[1000,900,500,400,100,90,50,40,10,9,5,4,1], s=['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
+  let r=''; v.forEach((val,i) => { while(n>=val){r+=s[i];n-=val;} }); return r;
+}
 
-  // Sort by wins desc, then avg pos asc
+// ── RENDER STANDINGS ──
+function renderStandings(stats, games) {
+  const total = games.length;
+  document.getElementById('battle-count').textContent = `${toRoman(total)} Battles Waged`;
+
   const sorted = [...PLAYERS].sort((a,b) => {
     if (stats[b].wins !== stats[a].wins) return stats[b].wins - stats[a].wins;
     return parseFloat(stats[a].avgPos) - parseFloat(stats[b].avgPos);
   });
 
-  // Helper: find leader(s) for a stat (lower = better if lowerBetter)
-  function leaders(stat, lowerBetter = false) {
-    const vals = PLAYERS.map(p => ({ p, v: parseFloat(stats[p][stat]) })).filter(x => !isNaN(x.v));
-    const best = lowerBetter ? Math.min(...vals.map(x=>x.v)) : Math.max(...vals.map(x=>x.v));
-    return vals.filter(x => x.v === best);
+  function leaders(stat, lo=false) {
+    const vals = PLAYERS.map(p => ({ p, v:parseFloat(stats[p][stat]) })).filter(x=>!isNaN(x.v));
+    const best = lo ? Math.min(...vals.map(x=>x.v)) : Math.max(...vals.map(x=>x.v));
+    return vals.filter(x=>x.v===best);
   }
 
-  function summaryName(ldrs) {
-    if (ldrs.length === 1) {
-      return `<span style="color:${PLAYER_COLORS[ldrs[0].p]};font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem">${ldrs[0].p}</span>`;
-    }
-    return ldrs.map(l =>
-      `<span style="color:${PLAYER_COLORS[l.p]};font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem">${l.p}</span>`
-    ).join('<span style="color:var(--muted);font-size:0.8rem"> · </span>');
+  function nameHtml(ldrs) {
+    return ldrs.map(l => `<span style="color:${PLAYER_COLORS2[l.p]};font-family:'Cinzel',serif;font-weight:700;font-size:${ldrs.length>1?'0.8':'0.92'}rem">${l.p}</span>`).join('<span style="color:var(--ink4);font-size:0.7rem"> · </span>');
   }
 
-  const mostWinsLdrs   = leaders('wins');
-  const bestPosLdrs    = leaders('avgPos', true);
-  const mostWins7Ldrs  = leaders('last7Wins');
-  const bestPos7Ldrs   = leaders('last7Avg', true);
-
-  const mostWinsVal  = stats[mostWinsLdrs[0].p].wins;
-  const bestPosVal   = stats[bestPosLdrs[0].p].avgPos;
-  const mostWins7Val = stats[mostWins7Ldrs[0].p].last7Wins;
-  const bestPos7Val  = stats[bestPos7Ldrs[0].p].last7Avg;
-  const tiedLabel    = `<div style="font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.2rem">TIED</div>`;
+  const tied = `<div class="summary-tied">— tied —</div>`;
+  const wL = leaders('wins'), pL = leaders('avgPos',true), w7L = leaders('last7Wins'), p7L = leaders('last7Avg',true);
 
   document.getElementById('summary-row').innerHTML = `
     <div class="summary-card">
-      <div class="summary-num">${totalGames}</div>
-      <div class="summary-lbl">Games Played</div>
+      <div class="summary-num">${toRoman(total)}</div>
+      <div class="summary-lbl">Battles<br>Waged</div>
     </div>
     <div class="summary-card">
-      ${mostWinsLdrs.length > 1 ? tiedLabel : ''}
-      <div style="margin-bottom:0.2rem">${summaryName(mostWinsLdrs)}</div>
-      <div class="summary-lbl">Most Wins (${mostWinsVal})</div>
+      ${wL.length>1?tied:''}
+      <div style="margin-bottom:0.25rem">${nameHtml(wL)}</div>
+      <div class="summary-lbl">Most Victories<br>· ${stats[wL[0].p].wins} ·</div>
     </div>
     <div class="summary-card">
-      ${bestPosLdrs.length > 1 ? tiedLabel : ''}
-      <div style="margin-bottom:0.2rem">${summaryName(bestPosLdrs)}</div>
-      <div class="summary-lbl">Best Avg Position (${bestPosVal})</div>
+      ${pL.length>1?tied:''}
+      <div style="margin-bottom:0.25rem">${nameHtml(pL)}</div>
+      <div class="summary-lbl">Finest Station<br>· ${stats[pL[0].p].avgPos} ·</div>
     </div>
-    <div class="summary-card" style="border-top:2px solid var(--accent)">
-      ${mostWins7Ldrs.length > 1 ? tiedLabel : ''}
-      <div style="margin-bottom:0.2rem">${summaryName(mostWins7Ldrs)}</div>
-      <div class="summary-lbl">🔥 Most Wins · Last 7 (${mostWins7Val})</div>
+    <div class="summary-card hot">
+      <div class="hot-tag">🔥 Last VII Battles</div>
+      ${w7L.length>1?tied:''}
+      <div style="margin-bottom:0.25rem">${nameHtml(w7L)}</div>
+      <div class="summary-lbl">Most Recent<br>Victories</div>
     </div>
-    <div class="summary-card" style="border-top:2px solid var(--accent)">
-      ${bestPos7Ldrs.length > 1 ? tiedLabel : ''}
-      <div style="margin-bottom:0.2rem">${summaryName(bestPos7Ldrs)}</div>
-      <div class="summary-lbl">🔥 Best Avg Pos · Last 7 (${bestPos7Val})</div>
+    <div class="summary-card hot">
+      <div class="hot-tag">🔥 Last VII Battles</div>
+      ${p7L.length>1?tied:''}
+      <div style="margin-bottom:0.25rem">${nameHtml(p7L)}</div>
+      <div class="summary-lbl">Best Recent<br>Station</div>
     </div>
   `;
 
-  // Leaderboard rows
+  const ranks = ['I','II','III','IV'];
   const tbody = document.getElementById('standings-body');
   tbody.innerHTML = '';
-  sorted.forEach((p, i) => {
-    const s = stats[p];
-    const color = PLAYER_COLORS[p];
+  sorted.forEach((p,i) => {
+    const s = stats[p], c = PLAYER_COLORS[p], c2 = PLAYER_COLORS2[p];
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td class="rank-num ${i===0?'rank-1':''}">${i+1}</td>
-      <td><div class="player-name-cell">
-        <div class="player-dot" style="background:${color}"></div>${p}
-      </div></td>
-      <td class="right"><strong>${s.wins}</strong></td>
-      <td class="right">${s.avgPos}</td>
-      <td class="right">${s.avgSeat}</td>
-      <td class="right" style="border-left:1px solid var(--border);padding-left:1rem;color:${color};font-weight:700">${s.last7Avg}</td>
-      <td class="right" style="color:${color};font-weight:700">${s.last7SeatAvg}</td>
+      <td class="rank-num ${i===0?'rank-1':''}">${ranks[i]}</td>
+      <td><div class="player-name-cell"><div class="player-dot" style="background:${c}"></div><span style="color:${c2}">${p}</span></div></td>
+      <td class="right"><span class="standing-val bold">${s.wins}</span></td>
+      <td class="right"><span class="standing-val">${s.avgPos}</span></td>
+      <td class="right"><span class="standing-val">${s.avgSeat}</span></td>
+      <td class="right l7-border"><span class="standing-val" style="color:${c2}">${s.last7Avg}</span></td>
+      <td class="right"><span class="standing-val" style="color:${c2}">${s.last7SeatAvg}</span></td>
     `;
     tbody.appendChild(tr);
   });
 
-  // Position history table
   const table = document.getElementById('pos-history-table');
-  let html = '<thead><tr><th>Player</th>';
-  games.forEach(g => { html += `<th>${g.game}</th>`; });
+  let html = '<thead><tr><th style="text-align:left;padding-left:0.7rem">Champion</th>';
+  games.forEach(g => { html += `<th>${toRoman(g.game)}</th>`; });
   html += '</tr></thead><tbody>';
   PLAYERS.forEach(p => {
-    html += `<tr><td class="player-col" style="color:${PLAYER_COLORS[p]}">${p}</td>`;
-    const posMap = {};
-    stats[p].positions.forEach(pp => { posMap[pp.game] = pp.pos; });
-    games.forEach(g => {
-      const pos = posMap[g.game];
-      html += pos ? `<td class="pos-cell-${pos}">${pos}</td>` : '<td>-</td>';
-    });
+    html += `<tr><td class="player-col" style="color:${PLAYER_COLORS2[p]}">${p}</td>`;
+    const posMap = {}; stats[p].positions.forEach(pp => { posMap[pp.game]=pp.pos; });
+    games.forEach(g => { const pos = posMap[g.game]; html += pos ? `<td class="pos-cell-${pos}">${pos}</td>` : '<td>—</td>'; });
     html += '</tr>';
   });
   table.innerHTML = html + '</tbody>';
+
+  document.getElementById('last-updated').textContent =
+    'Consulted ' + new Date().toLocaleString('en-US', { month:'long', day:'numeric', year:'numeric' });
 }
 
-// ─────────────────────────────────────────────
-// RENDER — GAME LOG
-// ─────────────────────────────────────────────
+// ── RENDER BATTLE LOG ──
 let allGames = [];
-let currentGameFilter = 'all';
 
 function renderGameLog(filter) {
-  currentGameFilter = filter;
   const container = document.getElementById('game-log');
   container.innerHTML = '';
-  document.getElementById('games-sub').textContent = `${allGames.length} sessions`;
+  document.getElementById('games-sub').textContent = `${toRoman(allGames.length)} battles recorded`;
 
-  const list = filter === 'all'
-    ? allGames
-    : allGames.filter(g => g.players.some(p => p.name === filter && p.won));
+  const list = filter === 'all' ? allGames : allGames.filter(g => g.players.some(p => p.name===filter && p.won));
 
   [...list].reverse().forEach(g => {
-    const sorted = [...g.players].sort((a,b) => a.position - b.position);
+    const sorted = [...g.players].sort((a,b) => a.position-b.position);
     const div = document.createElement('div');
     div.className = 'game-card';
     div.innerHTML = `
       <div class="game-header">
-        <span class="game-num">Game #${g.game}</span>
+        <span class="game-num">Battle the ${toRoman(g.game)}</span>
         <span class="game-date">${g.date}</span>
       </div>
       <div class="game-body">
         ${sorted.map(p => `
           <div class="game-player ${p.won?'winner':''}">
-            <div class="game-player-name" style="color:${PLAYER_COLORS[p.name]||'#fff'}">
+            <div class="game-player-name" style="color:${PLAYER_COLORS2[p.name]||'#fff'}">
               ${p.won?'<span class="winner-crown">★</span>':''}${p.name}
             </div>
-            <div class="game-commander"><a href="https://scryfall.com/search?q=!%22${encodeURIComponent(p.commander)}%22" target="_blank" style="color:var(--text);text-decoration:none;border-bottom:1px dotted var(--border)" onmouseover="this.style.color='var(--accent2)'" onmouseout="this.style.color='var(--text)'">${p.commander}</a></div>
-            <div class="game-seat">Seat ${p.seat} · Pos ${p.position}</div>
-            ${p.decklist ? `<a class="decklist-link" href="${p.decklist}" target="_blank">↗ Decklist</a>` : ''}
+            <div class="game-commander">
+              <a href="https://scryfall.com/search?q=!%22${encodeURIComponent(p.commander)}%22" target="_blank"
+                 style="color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--border1);transition:all 0.15s"
+                 onmouseover="this.style.color='var(--gold2)';this.style.borderBottomColor='var(--gold-dim)'"
+                 onmouseout="this.style.color='var(--ink2)';this.style.borderBottomColor='var(--border1)'">${p.commander}</a>
+            </div>
+            <div class="game-seat">Seat ${toRoman(p.seat)} · Position ${toRoman(p.position)}</div>
+            ${p.decklist ? `<a class="decklist-link" href="${p.decklist}" target="_blank">↗ View Decklist</a>` : ''}
           </div>
         `).join('')}
       </div>
@@ -966,191 +802,139 @@ function filterGames(filter, btn) {
   renderGameLog(filter);
 }
 
-// ─────────────────────────────────────────────
-// RENDER — COMMANDERS
-// ─────────────────────────────────────────────
+// ── RENDER COMMANDERS ──
 let cmdrData = [];
 let cmdrFilter = 'all';
-let cmdrSort = { key: 'played', dir: -1 };
+let cmdrSort = { key:'played', dir:-1 };
 
 function renderCmdrs() {
-  // When filtering by player, show only commanders they've piloted, with their personal stats
-  let data;
-  if (cmdrFilter === 'all') {
-    data = cmdrData;
-  } else {
-    data = cmdrData
-      .filter(c => c.pilots[cmdrFilter])
-      .map(c => {
-        const pd = c.pilots[cmdrFilter];
-        return { ...c, played: pd.played, wins: pd.wins, avgPos: c.avgPos };
-      });
-  }
+  let data = cmdrFilter === 'all' ? cmdrData : cmdrData
+    .filter(c => c.pilots[cmdrFilter])
+    .map(c => { const pd = c.pilots[cmdrFilter]; return { ...c, played:pd.played, wins:pd.wins }; });
 
   data = [...data].sort((a,b) => {
-    let av = a[cmdrSort.key], bv = b[cmdrSort.key];
-    if (!isNaN(av) && !isNaN(bv)) { av = +av; bv = +bv; }
-    if (av < bv) return cmdrSort.dir;
-    if (av > bv) return -cmdrSort.dir;
-    return 0;
+    let av=a[cmdrSort.key], bv=b[cmdrSort.key];
+    if (!isNaN(av)&&!isNaN(bv)){av=+av;bv=+bv;}
+    return av<bv ? cmdrSort.dir : av>bv ? -cmdrSort.dir : 0;
   });
 
-  const scryfallUrl = name => `https://scryfall.com/search?q=!"${encodeURIComponent(name)}"`;
+  const sfUrl = n => `https://scryfall.com/search?q=!"${encodeURIComponent(n)}"`;
 
   document.getElementById('cmdr-body').innerHTML = data.map(c => {
-    const pilotDots = Object.keys(c.pilots).map(pl =>
-      `<span title="${pl}" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${PLAYER_COLORS[pl]||'#fff'};margin-right:2px"></span>`
+    const dots = Object.keys(c.pilots).map(pl =>
+      `<span title="${pl}" style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${PLAYER_COLORS[pl]||'#fff'};margin-right:3px"></span>`
     ).join('');
     return `
       <tr>
-        <td style="font-weight:600">
-          <a href="${scryfallUrl(c.commander)}" target="_blank" style="color:var(--text);text-decoration:none;border-bottom:1px solid var(--border)" 
-             onmouseover="this.style.borderBottomColor='var(--accent2)'" 
-             onmouseout="this.style.borderBottomColor='var(--border)'">${c.commander}</a>
+        <td style="font-family:'Crimson Text',serif;font-style:italic;font-size:0.95rem">
+          <a href="${sfUrl(c.commander)}" target="_blank"
+             style="color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--border1)"
+             onmouseover="this.style.color='var(--gold2)';this.style.borderBottomColor='var(--gold-dim)'"
+             onmouseout="this.style.color='var(--ink2)';this.style.borderBottomColor='var(--border1)'">${c.commander}</a>
         </td>
-        <td>${pilotDots}</td>
-        <td>${c.wins>0?`<span class="win-badge">${c.wins}</span>`:`<span class="zero-badge">0</span>`}</td>
-        <td style="color:var(--muted)">${c.played}</td>
-        <td style="font-family:'Barlow Condensed',sans-serif;font-weight:700">${c.avgPos}</td>
-      </tr>
-    `;
+        <td>${dots}</td>
+        <td>${c.wins>0?`<span class="win-badge">${c.wins}</span>`:`<span class="zero-badge">—</span>`}</td>
+        <td style="font-family:'Cinzel',serif;font-size:0.7rem;color:var(--ink3)">${c.played}</td>
+        <td style="font-family:'Cinzel',serif;font-size:0.7rem;color:var(--ink2)">${c.avgPos}</td>
+      </tr>`;
   }).join('');
 }
 
 function filterCmdrs(filter, btn) {
   document.querySelectorAll('#cmdr-filters .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  cmdrFilter = filter;
-  renderCmdrs();
+  btn.classList.add('active'); cmdrFilter = filter; renderCmdrs();
 }
 
 function sortCmdrs(key) {
-  if (cmdrSort.key === key) cmdrSort.dir *= -1;
-  else { cmdrSort.key = key; cmdrSort.dir = -1; }
+  if (cmdrSort.key===key) cmdrSort.dir*=-1; else { cmdrSort.key=key; cmdrSort.dir=-1; }
   renderCmdrs();
 }
 
-// ─────────────────────────────────────────────
-// POOL DOWNLOAD
-// ─────────────────────────────────────────────
-const poolCardCache = {}; // lazy cache: { Adam: cards[], ... }
-
-const POOL_TABS = {
-  Adam: 'adamPool', Brendan: 'brendanPool', Dan: 'danPool', Jason: 'jasonPool'
-};
+// ── VAULT DOWNLOAD ──
+const poolCardCache = {};
+const POOL_TABS = { Adam:'adamPool', Brendan:'brendanPool', Dan:'danPool', Jason:'jasonPool' };
 
 async function downloadPool(player) {
   const btn = document.getElementById(`dl-btn-${player}`);
-  btn.textContent = 'Loading…';
-  btn.disabled = true;
-
+  btn.textContent = 'Retrieving from vault…'; btn.disabled = true;
   try {
-    if (!poolCardCache[player]) {
-      const rows = await fetchCSV(SHEET_TABS[POOL_TABS[player]]);
-      poolCardCache[player] = parsePool(rows);
-    }
-
-    const cards = poolCardCache[player];
-    const lines = cards
-      .filter(c => c.name)
-      .map(c => `${c.amount} ${c.name}`);
-
-    const text = lines.join('\n');
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href     = url;
-    a.download = `${player}_Pool.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-
-    btn.textContent = '↓ Download Pool';
-  } catch (err) {
-    btn.textContent = 'Error — retry';
-    console.error(err);
-  }
-
+    if (!poolCardCache[player]) poolCardCache[player] = parsePool(await fetchCSV(SHEET_TABS[POOL_TABS[player]]));
+    const text = poolCardCache[player].filter(c=>c.name).map(c=>`${c.amount} ${c.name}`).join('\n');
+    const a = Object.assign(document.createElement('a'), { href:URL.createObjectURL(new Blob([text],{type:'text/plain'})), download:`${player}_Vault.txt` });
+    a.click(); URL.revokeObjectURL(a.href);
+    btn.textContent = '↓ Download Vault Manifest';
+  } catch(err) { btn.textContent = 'Error — retry'; console.error(err); }
   btn.disabled = false;
 }
 
-// ─────────────────────────────────────────────
-// RENDER — POOLS
-// ─────────────────────────────────────────────
+// ── RENDER VAULTS ──
+const HEADSTONE = `<svg width="22" height="26" viewBox="0 0 22 26" fill="none" style="flex-shrink:0"><rect x="5" y="1" width="12" height="14" rx="6" stroke="#3a4455" stroke-width="1" fill="#1a1e2a"/><rect x="3" y="13" width="16" height="3" rx="1" fill="#1f2433" stroke="#3a4455" stroke-width="0.5"/><rect x="5" y="16" width="12" height="8" rx="1" fill="#1f2433" stroke="#3a4455" stroke-width="0.5"/><text x="11" y="11" text-anchor="middle" font-size="5" fill="#5a6880" font-family="serif" font-style="italic">RIP</text></svg>`;
+
 function renderPools(rotationData, graves) {
-  // rotationData = parsed rotation history keyed by player name
-  // graves = { Adam: cards[], ... } — graveyard cards for keeper lookup
   const grid = document.getElementById('pool-grid');
   grid.innerHTML = '';
 
   PLAYERS.forEach(p => {
     const sets = activeSets(rotationData, p);
-    const keeper = keeperCard(graves[p] || []);
-    const color = PLAYER_COLORS[p];
+    const keeper = keeperCard(graves[p]||[]);
+    const color = PLAYER_COLORS[p], color2 = PLAYER_COLORS2[p];
     const minRot = sets.length ? sets[0].rotOrder : 0;
-    const maxRot = sets.length ? sets[sets.length-1].rotOrder : 0;
+    const doomSet = sets.find(s => s.rotOrder === minRot);
 
     const div = document.createElement('div');
     div.className = 'pool-player-card';
     div.style.borderTopColor = color;
     div.innerHTML = `
       <div class="pool-player-header">
-        <span class="pool-player-name" style="color:${color}">${p}</span>
+        <div class="heraldic-bar" style="background:${color}"></div>
+        <span class="pool-player-name" style="color:${color2}">${p}</span>
         <span class="pool-count">${sets.length} sets</span>
       </div>
       <div class="pool-sets">
         ${[...sets].reverse().map(s => {
-          const isOldest = s.rotOrder === minRot;
-          const isNewest = s.rotOrder === maxRot;
-          return `<div class="set-pill ${isOldest?'set-oldest':''} ${isNewest?'set-newest':''}">
+          const doomed = s.rotOrder === minRot;
+          return `<div class="set-pill${doomed?' doomed':''}">
             <span class="set-code">${s.code}</span>
-            <span class="set-name">${s.setName || SET_NAMES[s.code] || s.code}</span>
+            <span class="set-name">${s.setName||SET_NAMES[s.code]||s.code}</span>
           </div>`;
         }).join('')}
       </div>
-      <div style="padding:0 1rem 1rem">
-        <button id="dl-btn-${p}" class="dl-btn" onclick="downloadPool('${p}')">↓ Download Pool</button>
-      </div>
+      ${doomSet ? `<div class="headstone-row">
+        ${HEADSTONE}
+        <div class="headstone-text">Bound for the graveyard:<br>
+          <span class="headstone-set">${doomSet.code} — ${doomSet.setName||SET_NAMES[doomSet.code]||doomSet.code}</span>
+        </div>
+      </div>` : ''}
+      <button id="dl-btn-${p}" class="dl-btn" onclick="downloadPool('${p}')">↓ Download Vault Manifest</button>
     `;
     grid.appendChild(div);
   });
 
-  // Keepers — read from graveyard tabs
   document.getElementById('keeper-grid').innerHTML = PLAYERS.map(p => {
-    const k = keeperCard(graves[p] || []);
-    const color = PLAYER_COLORS[p];
+    const k = keeperCard(graves[p]||[]);
+    const c = PLAYER_COLORS[p], c2 = PLAYER_COLORS2[p];
     return `
-      <div class="card" style="border-top:3px solid ${color}">
-        <div class="card-title" style="color:${color}">${p}</div>
+      <div class="card" style="border-top:2px solid ${c}">
+        <div class="card-title" style="color:${c2}">${p}</div>
         ${k
-          ? `<div style="font-weight:600;font-size:0.9rem">${k}</div>
-             <div style="margin-top:0.4rem"><span class="keeper-badge">Kept</span></div>`
-          : `<div style="color:var(--muted);font-size:0.85rem;font-style:italic">No keeper selected</div>`}
-      </div>
-    `;
+          ? `<div style="font-family:'Crimson Text',serif;font-style:italic;font-size:0.9rem;color:var(--ink2)">${k}</div><span class="keeper-badge">Rescued</span>`
+          : `<div style="font-family:'Crimson Text',serif;font-style:italic;font-size:0.85rem;color:var(--ink4)">No keeper selected</div>`}
+      </div>`;
   }).join('');
 }
 
-// ─────────────────────────────────────────────
-// TAB NAV
-// ─────────────────────────────────────────────
+// ── TAB NAV ──
 function showTab(name, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
   if (btn) btn.classList.add('active');
 }
 
-// ─────────────────────────────────────────────
-// MAIN INIT
-// ─────────────────────────────────────────────
+// ── INIT ──
 async function init() {
   try {
-    // Fetch all sheets in parallel
-    const [
-      matchRows,
-      rotationRows,
-      adamGraveRows, brendanGraveRows, danGraveRows, jasonGraveRows,
-    ] = await Promise.all([
+    const [matchRows, rotationRows, aGr, bGr, dGr, jGr] = await Promise.all([
       fetchCSV(SHEET_TABS.matchHistory),
       fetchCSV(SHEET_TABS.rotationHistory),
       fetchCSV(SHEET_TABS.adamGrave),
@@ -1159,41 +943,24 @@ async function init() {
       fetchCSV(SHEET_TABS.jasonGrave),
     ]);
 
-    // Parse
     const games = parseMatchHistory(matchRows);
     allGames = games;
-
     const rotationData = parseRotationHistory(rotationRows);
-
-    const graves = {
-      Adam:    parseGraveyard(adamGraveRows),
-      Brendan: parseGraveyard(brendanGraveRows),
-      Dan:     parseGraveyard(danGraveRows),
-      Jason:   parseGraveyard(jasonGraveRows),
-    };
-
+    const graves = { Adam:parseGraveyard(aGr), Brendan:parseGraveyard(bGr), Dan:parseGraveyard(dGr), Jason:parseGraveyard(jGr) };
     const stats = computeStats(games);
     cmdrData = computeCommanderStats(games);
 
-    // Render
     renderStandings(stats, games);
     renderGameLog('all');
     renderCmdrs();
     renderPools(rotationData, graves);
 
-    // Timestamp
-    document.getElementById('last-updated').textContent =
-      'Updated ' + new Date().toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
-
-    // Show app
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-
-  } catch (err) {
+  } catch(err) {
     document.getElementById('loading').style.display = 'none';
     document.getElementById('error').style.display = 'block';
-    document.getElementById('error-msg').textContent =
-      `${err.message}\n\nMake sure the Google Sheet is published to the web (File → Share → Publish to web) and the Sheet ID in the config is correct.`;
+    document.getElementById('error-msg').textContent = `${err.message}\n\nEnsure the Google Sheet is published (File → Share → Publish to web).`;
     console.error(err);
   }
 }
