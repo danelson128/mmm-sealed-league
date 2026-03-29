@@ -665,24 +665,47 @@ function parsePool(rows, hasKeeper = true) {
   return cards;
 }
 
-// Derive unique sets in pool, sorted by rotation order
+// Derive the 7 active sets: one entry per unique rotation order slot (highest 7),
+// since the same set code can appear multiple times across different rotation slots.
 function poolSets(cards) {
-  const map = {};
+  // Build a map of rotOrder -> set code (one entry per slot)
+  const slotMap = {};
   cards.forEach(c => {
-    if (!map[c.set]) map[c.set] = { code: c.set, rotOrder: c.rotOrder };
-    else if (c.rotOrder > map[c.set].rotOrder) map[c.set].rotOrder = c.rotOrder;
+    if (!slotMap[c.rotOrder]) slotMap[c.rotOrder] = c.set;
   });
-  return Object.values(map).sort((a,b) => a.rotOrder - b.rotOrder);
+  // Sort all slots, take the 7 highest
+  const allSlots = Object.keys(slotMap).map(Number).sort((a,b) => a - b);
+  const activeSlots = allSlots.slice(-7);
+  return activeSlots.map(rot => ({ code: slotMap[rot], rotOrder: rot }));
 }
 
-// Find keeper card name
-function keeperCard(cards) {
-  const k = cards.find(c => c.keeper);
+// Find keeper card name from graveyard rows (col G = Keeper, value "1")
+function keeperCard(graveCards) {
+  const k = graveCards.find(c => c.keeper);
   return k ? k.name : null;
 }
 
-// ─────────────────────────────────────────────
-// COMPUTE STATS
+// Parse graveyard tab — same structure as pool but keeper col (G) is what we care about
+// Graveyard columns: A=Amount B=Name C=Set D=Number E=Foil? F=RotationOrder G=Keeper?
+function parseGraveyard(rows) {
+  const cards = [];
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r[1]) continue;
+    // Check header row to detect if keeper column exists
+    const keeperVal = r[6] || '';
+    cards.push({
+      amount:   parseInt(r[0]) || 1,
+      name:     r[1],
+      set:      r[2] || '',
+      number:   r[3] || '',
+      foil:     (r[4] || '').toLowerCase() === 'foil',
+      rotOrder: parseInt(r[5]) || 0,
+      keeper:   keeperVal === '1' || keeperVal === 'TRUE' || keeperVal === '1.0',
+    });
+  }
+  return cards;
+}
 // ─────────────────────────────────────────────
 function computeStats(games) {
   const stats = {};
@@ -898,15 +921,16 @@ function sortCmdrs(key) {
 // ─────────────────────────────────────────────
 // RENDER — POOLS
 // ─────────────────────────────────────────────
-function renderPools(pools) {
-  // pools = { Adam: cards[], Brendan: cards[], ... }
+function renderPools(pools, graves) {
+  // pools = { Adam: cards[], ... }  — pool cards for active set display
+  // graves = { Adam: cards[], ... } — graveyard cards for keeper lookup
   const grid = document.getElementById('pool-grid');
   grid.innerHTML = '';
 
   PLAYERS.forEach(p => {
     const cards = pools[p] || [];
     const sets = poolSets(cards);
-    const keeper = keeperCard(cards);
+    const keeper = keeperCard(graves[p] || []);
     const color = PLAYER_COLORS[p];
     const minRot = sets.length ? sets[0].rotOrder : 0;
     const maxRot = sets.length ? sets[sets.length-1].rotOrder : 0;
@@ -933,10 +957,9 @@ function renderPools(pools) {
     grid.appendChild(div);
   });
 
-  // Keepers
+  // Keepers — read from graveyard tabs
   document.getElementById('keeper-grid').innerHTML = PLAYERS.map(p => {
-    const cards = pools[p] || [];
-    const k = keeperCard(cards);
+    const k = keeperCard(graves[p] || []);
     const color = PLAYER_COLORS[p];
     return `
       <div class="card" style="border-top:3px solid ${color}">
@@ -968,13 +991,18 @@ async function init() {
     // Fetch all sheets in parallel
     const [
       matchRows,
-      adamPoolRows, brendanPoolRows, danPoolRows, jasonPoolRows
+      adamPoolRows, brendanPoolRows, danPoolRows, jasonPoolRows,
+      adamGraveRows, brendanGraveRows, danGraveRows, jasonGraveRows,
     ] = await Promise.all([
       fetchCSV(SHEET_TABS.matchHistory),
       fetchCSV(SHEET_TABS.adamPool),
       fetchCSV(SHEET_TABS.brendanPool),
       fetchCSV(SHEET_TABS.danPool),
       fetchCSV(SHEET_TABS.jasonPool),
+      fetchCSV(SHEET_TABS.adamGrave),
+      fetchCSV(SHEET_TABS.brendanGrave),
+      fetchCSV(SHEET_TABS.danGrave),
+      fetchCSV(SHEET_TABS.jasonGrave),
     ]);
 
     // Parse
@@ -982,10 +1010,22 @@ async function init() {
     allGames = games;
 
     const pools = {
-      Adam:    parsePool(adamPoolRows,    true),
-      Brendan: parsePool(brendanPoolRows, true),
-      Dan:     parsePool(danPoolRows,     true),
-      Jason:   parsePool(jasonPoolRows,   true),
+      Adam:    parsePool(adamPoolRows,    false),
+      Brendan: parsePool(brendanPoolRows, false),
+      Dan:     parsePool(danPoolRows,     false),
+      Jason:   parsePool(jasonPoolRows,   false),
+    };
+
+    // Graveyard: keeper column is col F (index 5) on graveyard tabs
+    // Graveyard columns: A=Amount B=Name C=Set D=Number E=Foil? F=RotationOrder
+    // Keeper is marked in a separate "Keeper?" column — parse with hasKeeper=true
+    // but graveyard has no G column per the screenshots, so keeper detection needs
+    // to check if the sheet actually has a keeper column by looking at the header
+    const graves = {
+      Adam:    parseGraveyard(adamGraveRows),
+      Brendan: parseGraveyard(brendanGraveRows),
+      Dan:     parseGraveyard(danGraveRows),
+      Jason:   parseGraveyard(jasonGraveRows),
     };
 
     const stats = computeStats(games);
@@ -995,7 +1035,7 @@ async function init() {
     renderStandings(stats, games);
     renderGameLog('all');
     renderCmdrs();
-    renderPools(pools);
+    renderPools(pools, graves);
 
     // Timestamp
     document.getElementById('last-updated').textContent =
