@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magical Men's Meta Sealed League</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #11141a;
+    --surface2: #181c24;
+    --border: #232830;
+    --accent: #e8c84a;
+    --accent2: #4a9ee8;
+    --green: #3ecf6e;
+    --red: #e85a4a;
+    --text: #f0f2f5;
+    --muted: #7a8494;
+    --adam: #4a9ee8;
+    --brendan: #e85a4a;
+    --dan: #3ecf6e;
+    --jason: #e8c84a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo { display: flex; align-items: baseline; gap: 0.5rem; }
+  .logo-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1.4rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .logo-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 0.75rem;
+    color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+  }
+
+  .header-right { display: flex; align-items: center; gap: 1rem; }
+
+  .season-badge {
+    background: var(--accent); color: #000;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 0.75rem;
+    letter-spacing: 0.1em; padding: 0.25rem 0.75rem; border-radius: 2px;
+  }
+
+  .last-updated {
+    font-size: 0.7rem; color: var(--muted);
+    font-weight: 500; letter-spacing: 0.04em;
+  }
+
+  /* NAV */
+  nav {
+    display: flex; background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem; overflow-x: auto;
+  }
+
+  .nav-btn {
+    background: none; border: none;
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.9rem 1.5rem; cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* MAIN */
+  main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeUp 0.3s ease forwards; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* LOADING */
+  .loading-screen {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 60vh; gap: 1.5rem;
+  }
+
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .error-screen {
+    background: var(--surface);
+    border: 1px solid var(--red);
+    border-radius: 6px;
+    padding: 2rem;
+    text-align: center;
+    max-width: 500px;
+    margin: 4rem auto;
+  }
+
+  .error-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1.2rem;
+    color: var(--red); margin-bottom: 0.75rem;
+  }
+
+  .error-msg { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex; align-items: baseline;
+    gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1.6rem;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .section-sub {
+    font-size: 0.8rem; color: var(--muted);
+    letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500;
+  }
+
+  /* SUMMARY ROW */
+  .summary-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; margin-bottom: 2rem;
+  }
+  .summary-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 1rem 1.25rem; text-align: center;
+  }
+  .summary-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 2.2rem;
+    color: var(--accent); line-height: 1;
+  }
+  .summary-lbl {
+    font-size: 0.7rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-top: 0.25rem; font-weight: 600;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 1.25rem;
+  }
+
+  /* STANDINGS TABLE */
+  .standings-table { width: 100%; border-collapse: collapse; }
+  .standings-table th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); text-align: left;
+    padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border);
+  }
+  .standings-table th.right,
+  .standings-table td.right { text-align: right; }
+  .standings-table td {
+    padding: 0.9rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+  }
+  .standings-table tr:last-child td { border-bottom: none; }
+  .standings-table tr:hover td { background: var(--surface2); }
+
+  .rank-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 1.1rem; color: var(--muted); width: 2rem;
+  }
+  .rank-1 { color: var(--accent); }
+
+  .player-name-cell {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em;
+  }
+  .player-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .win-bar-wrap { display: flex; align-items: center; gap: 0.6rem; }
+  .win-bar-bg {
+    flex: 1; height: 6px; background: var(--border);
+    border-radius: 3px; overflow: hidden;
+  }
+  .win-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+  .win-bar-pct {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.85rem; width: 3rem; text-align: right;
+  }
+
+  /* POSITION HISTORY */
+  .pos-key { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .pos-key-item { display: flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; color: var(--muted); font-weight: 500; }
+  .pos-swatch { width: 12px; height: 12px; border-radius: 2px; }
+  .pos-cell-1 { background: rgba(232,200,74,0.25); color: var(--accent); }
+  .pos-cell-2 { background: rgba(74,158,232,0.15); color: var(--accent2); }
+  .pos-cell-3 { background: rgba(62,207,110,0.1); color: var(--green); }
+  .pos-cell-4 { background: rgba(120,130,148,0.1); color: var(--muted); }
+
+  .pos-history-wrap { overflow-x: auto; padding-bottom: 0.5rem; }
+  .pos-history-table { border-collapse: collapse; min-width: 100%; }
+  .pos-history-table th, .pos-history-table td {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem; padding: 0.35rem 0.45rem;
+    border: 1px solid var(--border); text-align: center; font-weight: 700;
+  }
+  .pos-history-table th {
+    background: var(--surface2); color: var(--muted);
+    font-size: 0.65rem; letter-spacing: 0.08em;
+  }
+  .pos-history-table td.player-col {
+    text-align: left; padding-left: 0.75rem;
+    font-size: 0.82rem; white-space: nowrap;
+  }
+
+  /* FILTER BAR */
+  .filter-bar { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .filter-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.75rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 3px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: #3a4050; color: var(--text); }
+  .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  /* GAME LOG */
+  .game-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; margin-bottom: 0.75rem; overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .game-card:hover { border-color: #3a4050; }
+  .game-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 1rem; background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .game-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 0.8rem;
+    letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase;
+  }
+  .game-date { font-size: 0.78rem; color: var(--muted); }
+  .game-body { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .game-player {
+    padding: 0.75rem 1rem; border-right: 1px solid var(--border);
+  }
+  .game-player:last-child { border-right: none; }
+  .game-player.winner { background: rgba(62,207,110,0.05); }
+  .game-player-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.75rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.35rem;
+  }
+  .winner-crown { color: var(--accent); font-size: 0.7rem; }
+  .game-commander { font-size: 0.82rem; color: var(--text); line-height: 1.3; margin-bottom: 0.2rem; }
+  .game-seat { font-size: 0.68rem; color: var(--muted); }
+  .decklist-link {
+    display: inline-block; margin-top: 0.3rem;
+    font-size: 0.65rem; color: var(--accent2);
+    text-decoration: none; letter-spacing: 0.05em;
+    text-transform: uppercase; font-weight: 600;
+  }
+  .decklist-link:hover { text-decoration: underline; }
+
+  /* COMMANDERS */
+  .cmdr-table { width: 100%; border-collapse: collapse; }
+  .cmdr-table th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); text-align: left;
+    padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--border);
+    cursor: pointer; user-select: none;
+  }
+  .cmdr-table th:hover { color: var(--text); }
+  .cmdr-table td {
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid var(--border); font-size: 0.88rem;
+  }
+  .cmdr-table tr:last-child td { border-bottom: none; }
+  .cmdr-table tr:hover td { background: var(--surface2); }
+  .win-badge {
+    background: var(--green); color: #000;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 0.75rem;
+    padding: 0.15rem 0.5rem; border-radius: 2px; display: inline-block;
+  }
+  .zero-badge { color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.75rem; }
+  .table-wrap { overflow-x: auto; }
+
+  /* POOLS */
+  .pool-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  .pool-player-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-top: 3px solid; border-radius: 6px; overflow: hidden;
+  }
+  .pool-player-header {
+    padding: 0.9rem 1rem 0.6rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .pool-player-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1.2rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .pool-count { font-size: 0.7rem; color: var(--muted); font-weight: 500; }
+  .pool-sets { padding: 0 1rem 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .set-pill {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 0.4rem 0.65rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .set-code { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.06em; }
+  .set-name { font-size: 0.7rem; color: var(--muted); text-align: right; max-width: 55%; line-height: 1.2; }
+  .set-oldest { border-color: var(--red); border-left: 3px solid var(--red); }
+  .set-newest { border-color: var(--green); border-left: 3px solid var(--green); }
+
+  .keeper-badge {
+    background: var(--accent); color: #000;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 0.6rem;
+    letter-spacing: 0.08em; padding: 0.1rem 0.35rem;
+    border-radius: 2px; text-transform: uppercase;
+  }
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.75rem;
+  }
+
+  .data-note {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent); border-radius: 4px;
+    padding: 0.75rem 1rem; font-size: 0.8rem;
+    color: var(--muted); margin-bottom: 1.5rem;
+  }
+  .data-note strong { color: var(--text); }
+
+  @media (max-width: 900px) {
+    .summary-row { grid-template-columns: 1fr 1fr; }
+    .pool-grid { grid-template-columns: 1fr 1fr; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+    .game-body { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .summary-row { grid-template-columns: 1fr 1fr; }
+    .pool-grid { grid-template-columns: 1fr 1fr; }
+    main { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-main">Magical Men's Meta</span>
+    <span class="logo-tag">Sealed League</span>
+  </div>
+  <div class="header-right">
+    <span class="last-updated" id="last-updated"></span>
+    <div class="season-badge">Est. 2023</div>
+  </div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showTab('standings', this)">Standings</button>
+  <button class="nav-btn" onclick="showTab('games', this)">Game Log</button>
+  <button class="nav-btn" onclick="showTab('commanders', this)">Commanders</button>
+  <button class="nav-btn" onclick="showTab('pools', this)">Pools</button>
+</nav>
+
+<main>
+  <div id="loading" class="loading-screen">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading league data…</div>
+  </div>
+
+  <div id="error" style="display:none">
+    <div class="error-screen">
+      <div class="error-title">Could not load data</div>
+      <div class="error-msg" id="error-msg"></div>
+    </div>
+  </div>
+
+  <div id="app" style="display:none">
+
+    <!-- STANDINGS -->
+    <div id="tab-standings" class="tab-content active">
+      <div class="summary-row" id="summary-row"></div>
+      <div class="section-header">
+        <span class="section-title">Leaderboard</span>
+        <span class="section-sub" id="standings-sub"></span>
+      </div>
+      <div class="card" style="margin-bottom:2rem">
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th style="width:2.5rem">#</th>
+              <th>Player</th>
+              <th class="right">W</th>
+              <th class="right">Win %</th>
+              <th class="right">Avg Pos</th>
+              <th class="right">Avg Seat</th>
+              <th>Win Rate</th>
+              <th class="right">Last 7 Avg Pos</th>
+            </tr>
+          </thead>
+          <tbody id="standings-body"></tbody>
+        </table>
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">Position History</span>
+        <span class="section-sub">All games · newest right</span>
+      </div>
+      <div class="pos-key">
+        <div class="pos-key-item"><div class="pos-swatch pos-cell-1"></div>1st</div>
+        <div class="pos-key-item"><div class="pos-swatch pos-cell-2"></div>2nd</div>
+        <div class="pos-key-item"><div class="pos-swatch pos-cell-3"></div>3rd</div>
+        <div class="pos-key-item"><div class="pos-swatch pos-cell-4"></div>4th</div>
+      </div>
+      <div class="card">
+        <div class="pos-history-wrap">
+          <table class="pos-history-table" id="pos-history-table"></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME LOG -->
+    <div id="tab-games" class="tab-content">
+      <div class="section-header">
+        <span class="section-title">Game Log</span>
+        <span class="section-sub" id="games-sub"></span>
+      </div>
+      <div class="filter-bar" id="game-filters">
+        <button class="filter-btn active" onclick="filterGames('all',this)">All</button>
+        <button class="filter-btn" onclick="filterGames('Adam',this)">Adam Wins</button>
+        <button class="filter-btn" onclick="filterGames('Brendan',this)">Brendan Wins</button>
+        <button class="filter-btn" onclick="filterGames('Dan',this)">Dan Wins</button>
+        <button class="filter-btn" onclick="filterGames('Jason',this)">Jason Wins</button>
+      </div>
+      <div id="game-log"></div>
+    </div>
+
+    <!-- COMMANDERS -->
+    <div id="tab-commanders" class="tab-content">
+      <div class="section-header">
+        <span class="section-title">Commander Stats</span>
+        <span class="section-sub">By pilot</span>
+      </div>
+      <div class="filter-bar" id="cmdr-filters">
+        <button class="filter-btn active" onclick="filterCmdrs('all',this)">All Players</button>
+        <button class="filter-btn" onclick="filterCmdrs('Adam',this)">Adam</button>
+        <button class="filter-btn" onclick="filterCmdrs('Brendan',this)">Brendan</button>
+        <button class="filter-btn" onclick="filterCmdrs('Dan',this)">Dan</button>
+        <button class="filter-btn" onclick="filterCmdrs('Jason',this)">Jason</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table class="cmdr-table">
+            <thead>
+              <tr>
+                <th onclick="sortCmdrs('commander')">Commander ↕</th>
+                <th onclick="sortCmdrs('player')">Pilot ↕</th>
+                <th onclick="sortCmdrs('wins')">W ↕</th>
+                <th onclick="sortCmdrs('played')">GP ↕</th>
+                <th onclick="sortCmdrs('avgPos')">Avg Pos ↕</th>
+              </tr>
+            </thead>
+            <tbody id="cmdr-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- POOLS -->
+    <div id="tab-pools" class="tab-content">
+      <div class="section-header">
+        <span class="section-title">Current Pools</span>
+        <span class="section-sub" id="pools-sub">7 sets per player</span>
+      </div>
+      <div class="data-note">
+        <strong>Red border</strong> = oldest set (next to rotate out) &nbsp;·&nbsp;
+        <strong>Green border</strong> = newest set &nbsp;·&nbsp;
+        <strong>KEEPER</strong> = card saved from previous rotation
+      </div>
+      <div class="pool-grid" id="pool-grid"></div>
+
+      <div class="section-header" style="margin-top:2rem">
+        <span class="section-title">Keeper Status</span>
+        <span class="section-sub">Current rotation</span>
+      </div>
+      <div class="grid-4" id="keeper-grid"></div>
+    </div>
+
+  </div><!-- /app -->
+</main>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIG — only thing you need to change
+// ─────────────────────────────────────────────
+const SHEET_ID = '1zKI3auk86Jq3mJBX8OYP5Y9WqiIoWGfBJi507tNj6Qs';
+
+const SHEET_TABS = {
+  matchHistory: 'Match History',
+  adamPool:     "Adam's Pool",
+  brendanPool:  "Brendan's Pool",
+  danPool:      "Dan's Pool",
+  jasonPool:    "Jason's Pool",
+  adamGrave:    "Adam's Graveyard",
+  brendanGrave: "Brendan's Graveyard",
+  danGrave:     "Dan's Graveyard",
+  jasonGrave:   "Jason's Graveyard",
+};
+
+const PLAYERS = ['Adam', 'Brendan', 'Dan', 'Jason'];
+
+const PLAYER_COLORS = {
+  Adam: '#4a9ee8', Brendan: '#e85a4a', Dan: '#3ecf6e', Jason: '#e8c84a'
+};
+
+const SET_NAMES = {
+  NEO:'Kamigawa: Neon Dynasty', AFR:'Forgotten Realms', M21:'Core Set 2021',
+  LTR:'Lord of the Rings', '2X2':'Double Masters 2022', SNC:'Streets of New Capenna',
+  MH2:'Modern Horizons 2', DMU:'Dominaria United', VOW:'Crimson Vow',
+  IKO:'Ikoria', ONE:'Phyrexia: All Will Be One', STX:'Strixhaven',
+  ELD:'Throne of Eldraine', KHM:'Kaldheim', MOM:'March of the Machine',
+  MID:'Innistrad: Midnight Hunt', THB:'Theros Beyond Death', ZNR:'Zendikar Rising',
+  DMR:'Dominaria Remastered', BRO:"The Brothers' War", WOE:'Wilds of Eldraine',
+  LCI:'Lost Caverns of Ixalan', RVR:'Ravnica Remastered', MKM:'Murders at Karlov Manor',
+  OTJ:'Outlaws of Thunder Junction', TLA:'The Last Airbender',
+  TLE:'The Last Airbender (extras)',
+  'UB Commander':'Universes Beyond Commander',
+  MH3:'Modern Horizons 3', BIG:'The Big Score', ACR:'Assassin\'s Creed',
+  DSK:'Duskmourn', FDN:'Foundations', INR:'Innistrad Remastered',
+  AKR:'Amonkhet Remastered', KLM:'Bloomburrow', MKC:'Karlov Manor Commander',
+};
+
+// ─────────────────────────────────────────────
+// FETCH HELPERS
+// ─────────────────────────────────────────────
+function sheetUrl(tabName) {
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+}
+
+async function fetchCSV(tabName) {
+  const res = await fetch(sheetUrl(tabName));
+  if (!res.ok) throw new Error(`Failed to fetch sheet: ${tabName}`);
+  const text = await res.text();
+  return parseCSV(text);
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  return lines.map(line => {
+    const cols = [];
+    let cur = '', inQuote = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { inQuote = !inQuote; }
+      else if (c === ',' && !inQuote) { cols.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    cols.push(cur.trim());
+    return cols;
+  });
+}
+
+// ─────────────────────────────────────────────
+// PARSE MATCH HISTORY
+// ─────────────────────────────────────────────
+// Columns: A=Player B=Game# C=Seat D=Position E=Commander F=Won G=Date H=Decklist I=Last5
+function parseMatchHistory(rows) {
+  // skip header row
+  const games = {};
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r[0] || !r[1]) continue;
+    const gameNum = parseInt(r[1]);
+    if (isNaN(gameNum)) continue;
+    if (!games[gameNum]) games[gameNum] = { game: gameNum, date: r[6] || '', players: [] };
+    games[gameNum].players.push({
+      name:      r[0],
+      seat:      parseInt(r[2]) || 0,
+      position:  parseInt(r[3]) || 0,
+      commander: r[4] || '',
+      won:       r[5] === '1' || r[5] === 'TRUE' || r[5] === 'true' || r[5] === '1.0',
+      decklist:  r[7] || '',
+    });
+  }
+  return Object.values(games).sort((a,b) => a.game - b.game);
+}
+
+// ─────────────────────────────────────────────
+// PARSE POOL / GRAVEYARD
+// ─────────────────────────────────────────────
+// Columns: A=Amount B=Name C=Set D=Number E=Foil? F=RotationOrder G=Keeper(pool only)
+function parsePool(rows, hasKeeper = true) {
+  const cards = [];
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r[1]) continue;
+    cards.push({
+      amount:    parseInt(r[0]) || 1,
+      name:      r[1],
+      set:       r[2] || '',
+      number:    r[3] || '',
+      foil:      r[4] === 'foil',
+      rotOrder:  parseInt(r[5]) || 0,
+      keeper:    hasKeeper ? (r[6] === '1' || r[6] === 'TRUE' || r[6] === '1.0') : false,
+    });
+  }
+  return cards;
+}
+
+// Derive unique sets in pool, sorted by rotation order
+function poolSets(cards) {
+  const map = {};
+  cards.forEach(c => {
+    if (!map[c.set]) map[c.set] = { code: c.set, rotOrder: c.rotOrder };
+    else if (c.rotOrder > map[c.set].rotOrder) map[c.set].rotOrder = c.rotOrder;
+  });
+  return Object.values(map).sort((a,b) => a.rotOrder - b.rotOrder);
+}
+
+// Find keeper card name
+function keeperCard(cards) {
+  const k = cards.find(c => c.keeper);
+  return k ? k.name : null;
+}
+
+// ─────────────────────────────────────────────
+// COMPUTE STATS
+// ─────────────────────────────────────────────
+function computeStats(games) {
+  const stats = {};
+  PLAYERS.forEach(p => {
+    stats[p] = { wins:0, games:0, posSum:0, seatSum:0, positions:[], last7Pos:[] };
+  });
+
+  games.forEach(g => {
+    g.players.forEach(p => {
+      if (!stats[p.name]) return;
+      stats[p.name].games++;
+      stats[p.name].posSum += p.position;
+      stats[p.name].seatSum += p.seat;
+      stats[p.name].positions.push({ game: g.game, pos: p.position });
+      if (p.won) stats[p.name].wins++;
+    });
+  });
+
+  const last7 = games.slice(-7);
+  last7.forEach(g => {
+    g.players.forEach(p => {
+      if (stats[p.name]) stats[p.name].last7Pos.push(p.position);
+    });
+  });
+
+  PLAYERS.forEach(p => {
+    const s = stats[p];
+    s.avgPos  = s.games ? (s.posSum / s.games).toFixed(2) : '-';
+    s.avgSeat = s.games ? (s.seatSum / s.games).toFixed(2) : '-';
+    s.winPct  = s.games ? ((s.wins / s.games) * 100).toFixed(1) : '0.0';
+    s.last7Avg = s.last7Pos.length ? (s.last7Pos.reduce((a,b)=>a+b,0)/s.last7Pos.length).toFixed(1) : '-';
+  });
+
+  return stats;
+}
+
+function computeCommanderStats(games) {
+  const cmdrs = {};
+  games.forEach(g => {
+    g.players.forEach(p => {
+      const key = p.name + '||' + p.commander;
+      if (!cmdrs[key]) cmdrs[key] = { commander: p.commander, player: p.name, wins:0, played:0, posSum:0 };
+      cmdrs[key].played++;
+      cmdrs[key].posSum += p.position;
+      if (p.won) cmdrs[key].wins++;
+    });
+  });
+  return Object.values(cmdrs).map(c => ({ ...c, avgPos: (c.posSum/c.played).toFixed(1) }));
+}
+
+// ─────────────────────────────────────────────
+// RENDER — STANDINGS
+// ─────────────────────────────────────────────
+function renderStandings(stats, games) {
+  const totalGames = games.length;
+  document.getElementById('standings-sub').textContent = `${totalGames} games played`;
+
+  // Summary row
+  const sorted = [...PLAYERS].sort((a,b) => {
+    if (stats[b].wins !== stats[a].wins) return stats[b].wins - stats[a].wins;
+    return parseFloat(stats[a].avgPos) - parseFloat(stats[b].avgPos);
+  });
+
+  const bestLast7 = [...PLAYERS].sort((a,b) => parseFloat(stats[a].last7Avg) - parseFloat(stats[b].last7Avg))[0];
+
+  document.getElementById('summary-row').innerHTML = `
+    <div class="summary-card"><div class="summary-num">${totalGames}</div><div class="summary-lbl">Games Played</div></div>
+    <div class="summary-card"><div class="summary-num">4</div><div class="summary-lbl">Players</div></div>
+    <div class="summary-card">
+      <div class="summary-num" style="font-size:1.4rem;padding-top:0.3rem;color:${PLAYER_COLORS[sorted[0]]}">${sorted[0]}</div>
+      <div class="summary-lbl">Most Wins (${stats[sorted[0]].wins})</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-num" style="font-size:1.4rem;padding-top:0.3rem;color:${PLAYER_COLORS[bestLast7]}">${bestLast7}</div>
+      <div class="summary-lbl">Best Form (Last 7)</div>
+    </div>
+  `;
+
+  // Leaderboard
+  const tbody = document.getElementById('standings-body');
+  tbody.innerHTML = '';
+  sorted.forEach((p, i) => {
+    const s = stats[p];
+    const color = PLAYER_COLORS[p];
+    const pct = parseFloat(s.winPct);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="rank-num ${i===0?'rank-1':''}">${i+1}</td>
+      <td><div class="player-name-cell">
+        <div class="player-dot" style="background:${color}"></div>${p}
+      </div></td>
+      <td class="right"><strong>${s.wins}</strong></td>
+      <td class="right">${s.winPct}%</td>
+      <td class="right">${s.avgPos}</td>
+      <td class="right">${s.avgSeat}</td>
+      <td style="min-width:140px">
+        <div class="win-bar-wrap">
+          <div class="win-bar-bg"><div class="win-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+          <span class="win-bar-pct" style="color:${color}">${s.winPct}%</span>
+        </div>
+      </td>
+      <td class="right" style="color:${color};font-weight:700">${s.last7Avg}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Position history table
+  const table = document.getElementById('pos-history-table');
+  let html = '<thead><tr><th>Player</th>';
+  games.forEach(g => { html += `<th>${g.game}</th>`; });
+  html += '</tr></thead><tbody>';
+  PLAYERS.forEach(p => {
+    html += `<tr><td class="player-col" style="color:${PLAYER_COLORS[p]}">${p}</td>`;
+    const posMap = {};
+    stats[p].positions.forEach(pp => { posMap[pp.game] = pp.pos; });
+    games.forEach(g => {
+      const pos = posMap[g.game];
+      html += pos ? `<td class="pos-cell-${pos}">${pos}</td>` : '<td>-</td>';
+    });
+    html += '</tr>';
+  });
+  table.innerHTML = html + '</tbody>';
+}
+
+// ─────────────────────────────────────────────
+// RENDER — GAME LOG
+// ─────────────────────────────────────────────
+let allGames = [];
+let currentGameFilter = 'all';
+
+function renderGameLog(filter) {
+  currentGameFilter = filter;
+  const container = document.getElementById('game-log');
+  container.innerHTML = '';
+  document.getElementById('games-sub').textContent = `${allGames.length} sessions`;
+
+  const list = filter === 'all'
+    ? allGames
+    : allGames.filter(g => g.players.some(p => p.name === filter && p.won));
+
+  [...list].reverse().forEach(g => {
+    const sorted = [...g.players].sort((a,b) => a.position - b.position);
+    const div = document.createElement('div');
+    div.className = 'game-card';
+    div.innerHTML = `
+      <div class="game-header">
+        <span class="game-num">Game #${g.game}</span>
+        <span class="game-date">${g.date}</span>
+      </div>
+      <div class="game-body">
+        ${sorted.map(p => `
+          <div class="game-player ${p.won?'winner':''}">
+            <div class="game-player-name" style="color:${PLAYER_COLORS[p.name]||'#fff'}">
+              ${p.won?'<span class="winner-crown">★</span>':''}${p.name}
+            </div>
+            <div class="game-commander">${p.commander}</div>
+            <div class="game-seat">Seat ${p.seat} · Pos ${p.position}</div>
+            ${p.decklist ? `<a class="decklist-link" href="${p.decklist}" target="_blank">↗ Decklist</a>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function filterGames(filter, btn) {
+  document.querySelectorAll('#game-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGameLog(filter);
+}
+
+// ─────────────────────────────────────────────
+// RENDER — COMMANDERS
+// ─────────────────────────────────────────────
+let cmdrData = [];
+let cmdrFilter = 'all';
+let cmdrSort = { key: 'played', dir: -1 };
+
+function renderCmdrs() {
+  let data = cmdrFilter === 'all' ? cmdrData : cmdrData.filter(c => c.player === cmdrFilter);
+  data = [...data].sort((a,b) => {
+    let av = a[cmdrSort.key], bv = b[cmdrSort.key];
+    if (!isNaN(av) && !isNaN(bv)) { av = +av; bv = +bv; }
+    if (av < bv) return cmdrSort.dir;
+    if (av > bv) return -cmdrSort.dir;
+    return 0;
+  });
+  document.getElementById('cmdr-body').innerHTML = data.map(c => `
+    <tr>
+      <td style="font-weight:600">${c.commander}</td>
+      <td><span style="color:${PLAYER_COLORS[c.player]||'#fff'};font-weight:700;font-family:'Barlow Condensed',sans-serif">${c.player}</span></td>
+      <td>${c.wins>0?`<span class="win-badge">${c.wins}</span>`:`<span class="zero-badge">0</span>`}</td>
+      <td style="color:var(--muted)">${c.played}</td>
+      <td style="font-family:'Barlow Condensed',sans-serif;font-weight:700">${c.avgPos}</td>
+    </tr>
+  `).join('');
+}
+
+function filterCmdrs(filter, btn) {
+  document.querySelectorAll('#cmdr-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  cmdrFilter = filter;
+  renderCmdrs();
+}
+
+function sortCmdrs(key) {
+  if (cmdrSort.key === key) cmdrSort.dir *= -1;
+  else { cmdrSort.key = key; cmdrSort.dir = -1; }
+  renderCmdrs();
+}
+
+// ─────────────────────────────────────────────
+// RENDER — POOLS
+// ─────────────────────────────────────────────
+function renderPools(pools) {
+  // pools = { Adam: cards[], Brendan: cards[], ... }
+  const grid = document.getElementById('pool-grid');
+  grid.innerHTML = '';
+
+  PLAYERS.forEach(p => {
+    const cards = pools[p] || [];
+    const sets = poolSets(cards);
+    const keeper = keeperCard(cards);
+    const color = PLAYER_COLORS[p];
+    const minRot = sets.length ? sets[0].rotOrder : 0;
+    const maxRot = sets.length ? sets[sets.length-1].rotOrder : 0;
+
+    const div = document.createElement('div');
+    div.className = 'pool-player-card';
+    div.style.borderTopColor = color;
+    div.innerHTML = `
+      <div class="pool-player-header">
+        <span class="pool-player-name" style="color:${color}">${p}</span>
+        <span class="pool-count">${sets.length} sets</span>
+      </div>
+      <div class="pool-sets">
+        ${[...sets].reverse().map(s => {
+          const isOldest = s.rotOrder === minRot;
+          const isNewest = s.rotOrder === maxRot;
+          return `<div class="set-pill ${isOldest?'set-oldest':''} ${isNewest?'set-newest':''}">
+            <span class="set-code">${s.code}</span>
+            <span class="set-name">${SET_NAMES[s.code]||s.code}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+
+  // Keepers
+  document.getElementById('keeper-grid').innerHTML = PLAYERS.map(p => {
+    const cards = pools[p] || [];
+    const k = keeperCard(cards);
+    const color = PLAYER_COLORS[p];
+    return `
+      <div class="card" style="border-top:3px solid ${color}">
+        <div class="card-title" style="color:${color}">${p}</div>
+        ${k
+          ? `<div style="font-weight:600;font-size:0.9rem">${k}</div>
+             <div style="margin-top:0.4rem"><span class="keeper-badge">Kept</span></div>`
+          : `<div style="color:var(--muted);font-size:0.85rem;font-style:italic">No keeper selected</div>`}
+      </div>
+    `;
+  }).join('');
+}
+
+// ─────────────────────────────────────────────
+// TAB NAV
+// ─────────────────────────────────────────────
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// ─────────────────────────────────────────────
+// MAIN INIT
+// ─────────────────────────────────────────────
+async function init() {
+  try {
+    // Fetch all sheets in parallel
+    const [
+      matchRows,
+      adamPoolRows, brendanPoolRows, danPoolRows, jasonPoolRows
+    ] = await Promise.all([
+      fetchCSV(SHEET_TABS.matchHistory),
+      fetchCSV(SHEET_TABS.adamPool),
+      fetchCSV(SHEET_TABS.brendanPool),
+      fetchCSV(SHEET_TABS.danPool),
+      fetchCSV(SHEET_TABS.jasonPool),
+    ]);
+
+    // Parse
+    const games = parseMatchHistory(matchRows);
+    allGames = games;
+
+    const pools = {
+      Adam:    parsePool(adamPoolRows,    true),
+      Brendan: parsePool(brendanPoolRows, true),
+      Dan:     parsePool(danPoolRows,     true),
+      Jason:   parsePool(jasonPoolRows,   true),
+    };
+
+    const stats = computeStats(games);
+    cmdrData = computeCommanderStats(games);
+
+    // Render
+    renderStandings(stats, games);
+    renderGameLog('all');
+    renderCmdrs();
+    renderPools(pools);
+
+    // Timestamp
+    document.getElementById('last-updated').textContent =
+      'Updated ' + new Date().toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+
+    // Show app
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error').style.display = 'block';
+    document.getElementById('error-msg').textContent =
+      `${err.message}\n\nMake sure the Google Sheet is published to the web (File → Share → Publish to web) and the Sheet ID in the config is correct.`;
+    console.error(err);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
