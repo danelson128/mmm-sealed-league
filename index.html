@@ -379,7 +379,30 @@
     color: var(--muted); margin-bottom: 0.75rem;
   }
 
-  .data-note {
+  .dl-btn {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .dl-btn:hover:not(:disabled) {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+  .dl-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
     background: var(--surface2); border: 1px solid var(--border);
     border-left: 3px solid var(--accent); border-radius: 4px;
     padding: 0.75rem 1rem; font-size: 0.8rem;
@@ -1008,6 +1031,49 @@ function sortCmdrs(key) {
 }
 
 // ─────────────────────────────────────────────
+// POOL DOWNLOAD
+// ─────────────────────────────────────────────
+const poolCardCache = {}; // lazy cache: { Adam: cards[], ... }
+
+const POOL_TABS = {
+  Adam: 'adamPool', Brendan: 'brendanPool', Dan: 'danPool', Jason: 'jasonPool'
+};
+
+async function downloadPool(player) {
+  const btn = document.getElementById(`dl-btn-${player}`);
+  btn.textContent = 'Loading…';
+  btn.disabled = true;
+
+  try {
+    if (!poolCardCache[player]) {
+      const rows = await fetchCSV(SHEET_TABS[POOL_TABS[player]]);
+      poolCardCache[player] = parsePool(rows);
+    }
+
+    const cards = poolCardCache[player];
+    const lines = cards
+      .filter(c => c.name)
+      .map(c => `${c.amount} ${c.name}`);
+
+    const text = lines.join('\n');
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `${player}_Pool.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    btn.textContent = '↓ Download Pool';
+  } catch (err) {
+    btn.textContent = 'Error — retry';
+    console.error(err);
+  }
+
+  btn.disabled = false;
+}
+
+// ─────────────────────────────────────────────
 // RENDER — POOLS
 // ─────────────────────────────────────────────
 function renderPools(rotationData, graves) {
@@ -1040,6 +1106,9 @@ function renderPools(rotationData, graves) {
             <span class="set-name">${s.setName || SET_NAMES[s.code] || s.code}</span>
           </div>`;
         }).join('')}
+      </div>
+      <div style="padding:0 1rem 1rem">
+        <button id="dl-btn-${p}" class="dl-btn" onclick="downloadPool('${p}')">↓ Download Pool</button>
       </div>
     `;
     grid.appendChild(div);
