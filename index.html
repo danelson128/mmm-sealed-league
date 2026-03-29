@@ -20,10 +20,10 @@
     --gold-dim: #5a4018;
     --silver:   #8a9ab8;
     --silver2:  #aabace;
-    --ink:      #e8f0fc;
-    --ink2:     #b8ccdf;
-    --ink3:     #7a8eaa;
-    --ink4:     #536070;
+    --ink:      #f0f6ff;
+    --ink2:     #ccdaee;
+    --ink3:     #92a8c0;
+    --ink4:     #6a7f96;
     --err:      #9e3a2a;
     --adam:     #2255aa;
     --adam2:    #4d80d9;
@@ -403,9 +403,9 @@
               <th style="width:2.5rem">#</th>
               <th>Champion</th>
               <th class="right">Victories</th>
-              <th class="right">Avg Position</th>
+              <th class="right">Avg Station</th>
               <th class="right">Avg Seat</th>
-              <th class="right" style="border-left:1px solid var(--border1);padding-left:1rem">Last VII Pos</th>
+              <th class="right" style="border-left:1px solid var(--border1);padding-left:1rem">Last VII Station</th>
               <th class="right">Last VII Seat</th>
             </tr>
           </thead>
@@ -464,10 +464,10 @@
             <thead>
               <tr>
                 <th onclick="sortCmdrs('commander')">Commander ↕</th>
-                <th>Pilots</th>
+                <th>Champions</th>
                 <th onclick="sortCmdrs('wins')">Victories ↕</th>
                 <th onclick="sortCmdrs('played')">Battles ↕</th>
-                <th onclick="sortCmdrs('avgPos')">Avg Position ↕</th>
+                <th onclick="sortCmdrs('avgPos')">Avg Station ↕</th>
               </tr>
             </thead>
             <tbody id="cmdr-body"></tbody>
@@ -482,7 +482,6 @@
         <div class="section-rule"></div>
         <span class="section-title">The Current Vaults</span>
         <div class="section-rule right"></div>
-        <span class="section-sub">7 sets per champion</span>
       </div>
       <div class="pool-grid" id="pool-grid"></div>
 
@@ -776,7 +775,7 @@ function renderGameLog(filter) {
                  onmouseover="this.style.color='var(--gold2)';this.style.borderBottomColor='var(--gold-dim)'"
                  onmouseout="this.style.color='var(--ink2)';this.style.borderBottomColor='var(--border1)'">${p.commander}</a>
             </div>
-            <div class="game-seat">Seat ${toRoman(p.seat)} · Position ${toRoman(p.position)}</div>
+            <div class="game-seat">Seat ${toRoman(p.seat)} · Station ${toRoman(p.position)}</div>
             ${p.decklist ? `<a class="decklist-link" href="${p.decklist}" target="_blank">↗ View Decklist</a>` : ''}
           </div>
         `).join('')}
@@ -812,7 +811,7 @@ function renderCmdrs() {
 
   document.getElementById('cmdr-body').innerHTML = data.map(c => {
     const dots = Object.keys(c.pilots).map(pl =>
-      `<span title="${pl}" style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${PLAYER_COLORS[pl]||'#fff'};margin-right:3px"></span>`
+      `<span title="${pl}" style="display:inline-block;width:12px;height:12px;border-radius:2px;background:${PLAYER_COLORS[pl]||'#fff'};margin-right:4px;cursor:default;position:relative;vertical-align:middle" aria-label="${pl}"></span>`
     ).join('');
     return `
       <tr>
@@ -883,7 +882,7 @@ function renderPools(rotationData, graves) {
       <div class="pool-sets">
         ${[...sets].reverse().map(s => {
           const doomed = s.rotOrder === minRot;
-          return `<div class="set-pill${doomed?' doomed':''}">
+          return `<div class="set-pill">
             <span class="set-code">${s.code}</span>
             <span class="set-name">${s.setName||SET_NAMES[s.code]||s.code}</span>
           </div>`;
