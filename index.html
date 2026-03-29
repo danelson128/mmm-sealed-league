@@ -163,7 +163,7 @@
 
   /* SUMMARY ROW */
   .summary-row {
-    display: grid; grid-template-columns: repeat(4, 1fr);
+    display: grid; grid-template-columns: repeat(5, 1fr);
     gap: 1rem; margin-bottom: 2rem;
   }
   .summary-card {
@@ -387,6 +387,9 @@
   }
   .data-note strong { color: var(--text); }
 
+  @media (max-width: 1100px) {
+    .summary-row { grid-template-columns: repeat(3, 1fr); }
+  }
   @media (max-width: 900px) {
     .summary-row { grid-template-columns: 1fr 1fr; }
     .pool-grid { grid-template-columns: 1fr 1fr; }
@@ -449,11 +452,10 @@
               <th style="width:2.5rem">#</th>
               <th>Player</th>
               <th class="right">W</th>
-              <th class="right">Win %</th>
               <th class="right">Avg Pos</th>
               <th class="right">Avg Seat</th>
-              <th>Win Rate</th>
-              <th class="right">Last 7 Avg Pos</th>
+              <th class="right" style="border-left:1px solid var(--border);padding-left:1rem">Last 7 Pos</th>
+              <th class="right">Last 7 Seat</th>
             </tr>
           </thead>
           <tbody id="standings-body"></tbody>
@@ -512,7 +514,7 @@
             <thead>
               <tr>
                 <th onclick="sortCmdrs('commander')">Commander ↕</th>
-                <th onclick="sortCmdrs('player')">Pilot ↕</th>
+                <th>Pilots</th>
                 <th onclick="sortCmdrs('wins')">W ↕</th>
                 <th onclick="sortCmdrs('played')">GP ↕</th>
                 <th onclick="sortCmdrs('avgPos')">Avg Pos ↕</th>
@@ -723,7 +725,7 @@ function parseGraveyard(rows) {
 function computeStats(games) {
   const stats = {};
   PLAYERS.forEach(p => {
-    stats[p] = { wins:0, games:0, posSum:0, seatSum:0, positions:[], last7Pos:[] };
+    stats[p] = { wins:0, games:0, posSum:0, seatSum:0, positions:[], last7Pos:[], last7Seat:[] };
   });
 
   games.forEach(g => {
@@ -740,16 +742,21 @@ function computeStats(games) {
   const last7 = games.slice(-7);
   last7.forEach(g => {
     g.players.forEach(p => {
-      if (stats[p.name]) stats[p.name].last7Pos.push(p.position);
+      if (!stats[p.name]) return;
+      stats[p.name].last7Pos.push(p.position);
+      stats[p.name].last7Seat.push(p.seat);
+      if (p.won) stats[p.name].last7Wins = (stats[p.name].last7Wins || 0) + 1;
     });
   });
 
   PLAYERS.forEach(p => {
     const s = stats[p];
-    s.avgPos  = s.games ? (s.posSum / s.games).toFixed(2) : '-';
-    s.avgSeat = s.games ? (s.seatSum / s.games).toFixed(2) : '-';
-    s.winPct  = s.games ? ((s.wins / s.games) * 100).toFixed(1) : '0.0';
-    s.last7Avg = s.last7Pos.length ? (s.last7Pos.reduce((a,b)=>a+b,0)/s.last7Pos.length).toFixed(1) : '-';
+    s.avgPos    = s.games ? (s.posSum / s.games).toFixed(2) : '-';
+    s.avgSeat   = s.games ? (s.seatSum / s.games).toFixed(2) : '-';
+    s.winPct    = s.games ? ((s.wins / s.games) * 100).toFixed(1) : '0.0';
+    s.last7Avg  = s.last7Pos.length  ? (s.last7Pos.reduce((a,b)=>a+b,0)  / s.last7Pos.length).toFixed(2)  : '-';
+    s.last7SeatAvg = s.last7Seat.length ? (s.last7Seat.reduce((a,b)=>a+b,0) / s.last7Seat.length).toFixed(2) : '-';
+    s.last7Wins = s.last7Wins || 0;
   });
 
   return stats;
@@ -759,11 +766,15 @@ function computeCommanderStats(games) {
   const cmdrs = {};
   games.forEach(g => {
     g.players.forEach(p => {
-      const key = p.name + '||' + p.commander;
-      if (!cmdrs[key]) cmdrs[key] = { commander: p.commander, player: p.name, wins:0, played:0, posSum:0 };
+      const key = p.commander;
+      if (!cmdrs[key]) cmdrs[key] = { commander: p.commander, wins:0, played:0, posSum:0, pilots:{} };
       cmdrs[key].played++;
       cmdrs[key].posSum += p.position;
       if (p.won) cmdrs[key].wins++;
+      // Track per-pilot stats
+      if (!cmdrs[key].pilots[p.name]) cmdrs[key].pilots[p.name] = { wins:0, played:0 };
+      cmdrs[key].pilots[p.name].played++;
+      if (p.won) cmdrs[key].pilots[p.name].wins++;
     });
   });
   return Object.values(cmdrs).map(c => ({ ...c, avgPos: (c.posSum/c.played).toFixed(1) }));
@@ -776,34 +787,72 @@ function renderStandings(stats, games) {
   const totalGames = games.length;
   document.getElementById('standings-sub').textContent = `${totalGames} games played`;
 
-  // Summary row
+  // Sort by wins desc, then avg pos asc
   const sorted = [...PLAYERS].sort((a,b) => {
     if (stats[b].wins !== stats[a].wins) return stats[b].wins - stats[a].wins;
     return parseFloat(stats[a].avgPos) - parseFloat(stats[b].avgPos);
   });
 
-  const bestLast7 = [...PLAYERS].sort((a,b) => parseFloat(stats[a].last7Avg) - parseFloat(stats[b].last7Avg))[0];
+  // Helper: find leader(s) for a stat (lower = better if lowerBetter)
+  function leaders(stat, lowerBetter = false) {
+    const vals = PLAYERS.map(p => ({ p, v: parseFloat(stats[p][stat]) })).filter(x => !isNaN(x.v));
+    const best = lowerBetter ? Math.min(...vals.map(x=>x.v)) : Math.max(...vals.map(x=>x.v));
+    return vals.filter(x => x.v === best);
+  }
+
+  function summaryName(ldrs) {
+    if (ldrs.length === 1) {
+      return `<span style="color:${PLAYER_COLORS[ldrs[0].p]};font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem">${ldrs[0].p}</span>`;
+    }
+    return ldrs.map(l =>
+      `<span style="color:${PLAYER_COLORS[l.p]};font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem">${l.p}</span>`
+    ).join('<span style="color:var(--muted);font-size:0.8rem"> · </span>');
+  }
+
+  const mostWinsLdrs   = leaders('wins');
+  const bestPosLdrs    = leaders('avgPos', true);
+  const mostWins7Ldrs  = leaders('last7Wins');
+  const bestPos7Ldrs   = leaders('last7Avg', true);
+
+  const mostWinsVal  = stats[mostWinsLdrs[0].p].wins;
+  const bestPosVal   = stats[bestPosLdrs[0].p].avgPos;
+  const mostWins7Val = stats[mostWins7Ldrs[0].p].last7Wins;
+  const bestPos7Val  = stats[bestPos7Ldrs[0].p].last7Avg;
+  const tiedLabel    = `<div style="font-size:0.6rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:0.2rem">TIED</div>`;
 
   document.getElementById('summary-row').innerHTML = `
-    <div class="summary-card"><div class="summary-num">${totalGames}</div><div class="summary-lbl">Games Played</div></div>
-    <div class="summary-card"><div class="summary-num">4</div><div class="summary-lbl">Players</div></div>
     <div class="summary-card">
-      <div class="summary-num" style="font-size:1.4rem;padding-top:0.3rem;color:${PLAYER_COLORS[sorted[0]]}">${sorted[0]}</div>
-      <div class="summary-lbl">Most Wins (${stats[sorted[0]].wins})</div>
+      <div class="summary-num">${totalGames}</div>
+      <div class="summary-lbl">Games Played</div>
     </div>
     <div class="summary-card">
-      <div class="summary-num" style="font-size:1.4rem;padding-top:0.3rem;color:${PLAYER_COLORS[bestLast7]}">${bestLast7}</div>
-      <div class="summary-lbl">Best Form (Last 7)</div>
+      ${mostWinsLdrs.length > 1 ? tiedLabel : ''}
+      <div style="margin-bottom:0.2rem">${summaryName(mostWinsLdrs)}</div>
+      <div class="summary-lbl">Most Wins (${mostWinsVal})</div>
+    </div>
+    <div class="summary-card">
+      ${bestPosLdrs.length > 1 ? tiedLabel : ''}
+      <div style="margin-bottom:0.2rem">${summaryName(bestPosLdrs)}</div>
+      <div class="summary-lbl">Best Avg Position (${bestPosVal})</div>
+    </div>
+    <div class="summary-card" style="border-top:2px solid var(--accent)">
+      ${mostWins7Ldrs.length > 1 ? tiedLabel : ''}
+      <div style="margin-bottom:0.2rem">${summaryName(mostWins7Ldrs)}</div>
+      <div class="summary-lbl">🔥 Most Wins · Last 7 (${mostWins7Val})</div>
+    </div>
+    <div class="summary-card" style="border-top:2px solid var(--accent)">
+      ${bestPos7Ldrs.length > 1 ? tiedLabel : ''}
+      <div style="margin-bottom:0.2rem">${summaryName(bestPos7Ldrs)}</div>
+      <div class="summary-lbl">🔥 Best Avg Pos · Last 7 (${bestPos7Val})</div>
     </div>
   `;
 
-  // Leaderboard
+  // Leaderboard rows
   const tbody = document.getElementById('standings-body');
   tbody.innerHTML = '';
   sorted.forEach((p, i) => {
     const s = stats[p];
     const color = PLAYER_COLORS[p];
-    const pct = parseFloat(s.winPct);
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="rank-num ${i===0?'rank-1':''}">${i+1}</td>
@@ -811,16 +860,10 @@ function renderStandings(stats, games) {
         <div class="player-dot" style="background:${color}"></div>${p}
       </div></td>
       <td class="right"><strong>${s.wins}</strong></td>
-      <td class="right">${s.winPct}%</td>
       <td class="right">${s.avgPos}</td>
       <td class="right">${s.avgSeat}</td>
-      <td style="min-width:140px">
-        <div class="win-bar-wrap">
-          <div class="win-bar-bg"><div class="win-bar-fill" style="width:${pct}%;background:${color}"></div></div>
-          <span class="win-bar-pct" style="color:${color}">${s.winPct}%</span>
-        </div>
-      </td>
-      <td class="right" style="color:${color};font-weight:700">${s.last7Avg}</td>
+      <td class="right" style="border-left:1px solid var(--border);padding-left:1rem;color:${color};font-weight:700">${s.last7Avg}</td>
+      <td class="right" style="color:${color};font-weight:700">${s.last7SeatAvg}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -874,7 +917,7 @@ function renderGameLog(filter) {
             <div class="game-player-name" style="color:${PLAYER_COLORS[p.name]||'#fff'}">
               ${p.won?'<span class="winner-crown">★</span>':''}${p.name}
             </div>
-            <div class="game-commander">${p.commander}</div>
+            <div class="game-commander"><a href="https://scryfall.com/search?q=!%22${encodeURIComponent(p.commander)}%22" target="_blank" style="color:var(--text);text-decoration:none;border-bottom:1px dotted var(--border)" onmouseover="this.style.color='var(--accent2)'" onmouseout="this.style.color='var(--text)'">${p.commander}</a></div>
             <div class="game-seat">Seat ${p.seat} · Pos ${p.position}</div>
             ${p.decklist ? `<a class="decklist-link" href="${p.decklist}" target="_blank">↗ Decklist</a>` : ''}
           </div>
@@ -899,7 +942,19 @@ let cmdrFilter = 'all';
 let cmdrSort = { key: 'played', dir: -1 };
 
 function renderCmdrs() {
-  let data = cmdrFilter === 'all' ? cmdrData : cmdrData.filter(c => c.player === cmdrFilter);
+  // When filtering by player, show only commanders they've piloted, with their personal stats
+  let data;
+  if (cmdrFilter === 'all') {
+    data = cmdrData;
+  } else {
+    data = cmdrData
+      .filter(c => c.pilots[cmdrFilter])
+      .map(c => {
+        const pd = c.pilots[cmdrFilter];
+        return { ...c, played: pd.played, wins: pd.wins, avgPos: c.avgPos };
+      });
+  }
+
   data = [...data].sort((a,b) => {
     let av = a[cmdrSort.key], bv = b[cmdrSort.key];
     if (!isNaN(av) && !isNaN(bv)) { av = +av; bv = +bv; }
@@ -907,15 +962,27 @@ function renderCmdrs() {
     if (av > bv) return -cmdrSort.dir;
     return 0;
   });
-  document.getElementById('cmdr-body').innerHTML = data.map(c => `
-    <tr>
-      <td style="font-weight:600">${c.commander}</td>
-      <td><span style="color:${PLAYER_COLORS[c.player]||'#fff'};font-weight:700;font-family:'Barlow Condensed',sans-serif">${c.player}</span></td>
-      <td>${c.wins>0?`<span class="win-badge">${c.wins}</span>`:`<span class="zero-badge">0</span>`}</td>
-      <td style="color:var(--muted)">${c.played}</td>
-      <td style="font-family:'Barlow Condensed',sans-serif;font-weight:700">${c.avgPos}</td>
-    </tr>
-  `).join('');
+
+  const scryfallUrl = name => `https://scryfall.com/search?q=!"${encodeURIComponent(name)}"`;
+
+  document.getElementById('cmdr-body').innerHTML = data.map(c => {
+    const pilotDots = Object.keys(c.pilots).map(pl =>
+      `<span title="${pl}" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${PLAYER_COLORS[pl]||'#fff'};margin-right:2px"></span>`
+    ).join('');
+    return `
+      <tr>
+        <td style="font-weight:600">
+          <a href="${scryfallUrl(c.commander)}" target="_blank" style="color:var(--text);text-decoration:none;border-bottom:1px solid var(--border)" 
+             onmouseover="this.style.borderBottomColor='var(--accent2)'" 
+             onmouseout="this.style.borderBottomColor='var(--border)'">${c.commander}</a>
+        </td>
+        <td>${pilotDots}</td>
+        <td>${c.wins>0?`<span class="win-badge">${c.wins}</span>`:`<span class="zero-badge">0</span>`}</td>
+        <td style="color:var(--muted)">${c.played}</td>
+        <td style="font-family:'Barlow Condensed',sans-serif;font-weight:700">${c.avgPos}</td>
+      </tr>
+    `;
+  }).join('');
 }
 
 function filterCmdrs(filter, btn) {
