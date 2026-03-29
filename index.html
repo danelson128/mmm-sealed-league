@@ -671,20 +671,23 @@ function parsePool(rows, hasKeeper = true) {
 }
 
 // Parse the Rotation Order / History tab
-// Columns: A=SetCode B=AssignedTo(A/B/D/J) C=RotationOrder D=RotationPoint E=Last7? (H+ = scratch, ignore)
+// Columns: A=SetCode B=AssignedTo(A/B/D/J) C=RotationOrder D=RotationPoint E=Last7? F=SetName (G+ = scratch, ignore)
 function parseRotationHistory(rows) {
-  // Returns { Adam: [{code, rotOrder},...], Brendan: [...], Dan: [...], Jason: [...] }
   const result = { Adam: [], Brendan: [], Dan: [], Jason: [] };
+  const setNames = {}; // code -> name, built from col F
   for (let i = 1; i < rows.length; i++) {
     const r = rows[i];
-    const code    = (r[0] || '').trim();
-    const letter  = (r[1] || '').trim();
+    const code     = (r[0] || '').trim();
+    const letter   = (r[1] || '').trim();
     const rotOrder = parseInt(r[2]);
+    const setName  = (r[5] || '').trim();
     if (!code || !letter || isNaN(rotOrder)) continue;
     const player = PLAYER_LETTERS[letter];
     if (!player) continue;
-    result[player].push({ code, rotOrder });
+    result[player].push({ code, rotOrder, setName });
+    if (setName) setNames[code] = setName; // last write wins, fine for display
   }
+  result._setNames = setNames; // attach for use in rendering
   return result;
 }
 
@@ -694,10 +697,16 @@ function activeSets(rotationData, player) {
   return entries.slice(-7);
 }
 
-// Find keeper card name from graveyard rows (col G = Keeper, value "1")
+// Find keeper card from graveyard: look only at cards with the highest rotation order,
+// then find one marked with keeper=true among those.
 function keeperCard(graveCards) {
-  const k = graveCards.find(c => c.keeper);
-  return k ? k.name : null;
+  if (!graveCards.length) return null;
+  const validCards = graveCards.filter(c => c.rotOrder > 0);
+  if (!validCards.length) return null;
+  const maxRot = Math.max(...validCards.map(c => c.rotOrder));
+  const mostRecent = validCards.filter(c => c.rotOrder === maxRot);
+  const kept = mostRecent.find(c => c.keeper);
+  return kept ? kept.name : null;
 }
 
 // Parse graveyard tab — same structure as pool but keeper col (G) is what we care about
@@ -1028,7 +1037,7 @@ function renderPools(rotationData, graves) {
           const isNewest = s.rotOrder === maxRot;
           return `<div class="set-pill ${isOldest?'set-oldest':''} ${isNewest?'set-newest':''}">
             <span class="set-code">${s.code}</span>
-            <span class="set-name">${SET_NAMES[s.code]||s.code}</span>
+            <span class="set-name">${s.setName || SET_NAMES[s.code] || s.code}</span>
           </div>`;
         }).join('')}
       </div>
