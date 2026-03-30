@@ -403,9 +403,10 @@
               <th style="width:2.5rem">#</th>
               <th>Champion</th>
               <th class="right">Victories</th>
-              <th class="right">Avg Station</th>
-              <th class="right">Avg Seat</th>
-              <th class="right" style="border-left:1px solid var(--border1);padding-left:1rem">Last VII Station</th>
+              <th class="right">Station</th>
+              <th class="right">Seat</th>
+              <th class="right" style="border-left:1px solid var(--border1);padding-left:1rem">Last VII Victories</th>
+              <th class="right">Last VII Station</th>
               <th class="right">Last VII Seat</th>
             </tr>
           </thead>
@@ -722,8 +723,9 @@ function renderStandings(stats, games) {
       <td class="right"><span class="standing-val bold">${s.wins}</span></td>
       <td class="right"><span class="standing-val">${s.avgPos}</span></td>
       <td class="right"><span class="standing-val">${s.avgSeat}</span></td>
-      <td class="right l7-border"><span class="standing-val" style="color:${c2}">${s.last7Avg}</span></td>
-      <td class="right"><span class="standing-val" style="color:${c2}">${s.last7SeatAvg}</span></td>
+      <td class="right l7-border"><span class="standing-val">${s.last7Wins}</span></td>
+      <td class="right"><span class="standing-val">${s.last7Avg}</span></td>
+      <td class="right"><span class="standing-val">${s.last7SeatAvg}</span></td>
     `;
     tbody.appendChild(tr);
   });
@@ -735,7 +737,7 @@ function renderStandings(stats, games) {
   PLAYERS.forEach(p => {
     html += `<tr><td class="player-col" style="color:${PLAYER_COLORS2[p]}">${p}</td>`;
     const posMap = {}; stats[p].positions.forEach(pp => { posMap[pp.game]=pp.pos; });
-    games.forEach(g => { const pos = posMap[g.game]; html += pos ? `<td class="pos-cell-${pos}">${pos}</td>` : '<td>—</td>'; });
+    games.forEach(g => { const pos = posMap[g.game]; html += pos ? `<td class="${pos===1?'pos-cell-1':''}">${pos}</td>` : '<td>—</td>'; });
     html += '</tr>';
   });
   table.innerHTML = html + '</tbody>';
